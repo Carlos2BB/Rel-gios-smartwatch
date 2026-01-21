@@ -346,10 +346,12 @@ h2 {
     <div class="menu-container">
         <button id="menu-btn">Menu ▾</button>
         <div id="menu-dropdown">
-            <button id="cart-btn">🛒 Carrinho</button>
-            <button id="account-btn">👤 Minha Conta</button>
-            <button id="coupons-btn">🎟️ Meus Cupons</button>
-        </div>
+    <button id="cart-btn">🛒 Carrinho</button>
+    <button id="account-btn">👤 Minha Conta</button>
+    <button id="coupons-btn">🎟️ Meus Cupons</button>
+    <button id="sell-btn">💰 Começar a vender</button> <!-- NOVO BOTÃO -->
+</div>
+
     </div>
 </header>
 
@@ -486,6 +488,14 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = "cupons.html";
         });
     }
+    // NOVO BOTÃO - Começar a vender
+const sellBtn = document.getElementById("sell-btn");
+if (sellBtn) {
+    sellBtn.addEventListener("click", () => {
+        window.location.href = "vender.html";
+    });
+}
+
 
     /* ===== CARRINHO ===== */
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
