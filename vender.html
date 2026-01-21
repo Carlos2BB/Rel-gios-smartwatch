@@ -1,1 +1,144 @@
-oi
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minha Loja</title>
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2 { text-align: center; }
+    .product-form, .products-list, .cart { margin: 20px auto; max-width: 800px; }
+    input, textarea, button { display: block; margin: 10px 0; padding: 8px; width: 100%; }
+    .product { border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 15px; }
+    .product img { width: 100%; max-height: 200px; object-fit: cover; border-radius: 5px; }
+    .old-price { text-decoration: line-through; color: #999; }
+    .price { font-weight: bold; color: green; }
+    .filter-container input { width: 23%; display: inline-block; margin-right: 1%; }
+</style>
+</head>
+<body>
+
+<h2>Minha Loja - Gerenciar Produtos</h2>
+
+<!-- Formulário para criar produto -->
+<div class="product-form">
+    <h3>Adicionar Produto</h3>
+    <input type="text" id="name" placeholder="Nome do produto" required>
+    <textarea id="desc" placeholder="Descrição do produto"></textarea>
+    <input type="number" id="price" placeholder="Preço (R$)" required>
+    <input type="number" id="discount" placeholder="Desconto (%)" value="0">
+    <input type="text" id="image" placeholder="URL da imagem">
+    <input type="text" id="coupon" placeholder="Cupom (opcional)">
+    <button onclick="addProduct()">Adicionar Produto</button>
+</div>
+
+<!-- Filtros de busca -->
+<div class="filter-container">
+    <input type="text" id="search-bar" placeholder="Buscar produto...">
+    <input type="number" id="min-price" placeholder="Preço mínimo">
+    <input type="number" id="max-price" placeholder="Preço máximo">
+    <input type="number" id="min-discount" placeholder="Desconto mínimo (%)">
+</div>
+
+<!-- Lista de produtos -->
+<div class="products-list" id="products-list"></div>
+
+<script>
+// Carregar produtos do localStorage
+let products = JSON.parse(localStorage.getItem("storeProducts")) || [];
+
+// Função para adicionar produto
+function addProduct() {
+    const name = document.getElementById("name").value;
+    const desc = document.getElementById("desc").value;
+    const price = parseFloat(document.getElementById("price").value);
+    const discount = parseFloat(document.getElementById("discount").value) || 0;
+    const image = document.getElementById("image").value;
+    const coupon = document.getElementById("coupon").value;
+
+    if(!name || !price) { alert("Nome e preço são obrigatórios!"); return; }
+
+    products.push({ name, desc, price, discount, image, coupon });
+    localStorage.setItem("storeProducts", JSON.stringify(products));
+    renderProducts();
+    document.querySelector(".product-form").reset();
+}
+
+// Calcular preço com desconto
+function getDiscountedPrice(p) {
+    return (p.price * (1 - (p.discount || 0)/100)).toFixed(2);
+}
+
+// Renderizar produtos
+function renderProducts() {
+    const container = document.getElementById("products-list");
+    container.innerHTML = "";
+    products.forEach((p, i) => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+            <div class="product-name">${p.name}</div>
+            <img src="${p.image || 'https://via.placeholder.com/150'}" alt="${p.name}">
+            <p>${p.desc}</p>
+            <p class="old-price">R$ ${p.price.toFixed(2)}</p>
+            <p class="price">R$ ${getDiscountedPrice(p)}</p>
+            ${p.coupon ? `<p>Use cupom: ${p.coupon}</p>` : ""}
+            <button onclick="addToCart(${i})">Adicionar ao Carrinho</button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+// Carrinho
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+function addToCart(index) {
+    cart.push(products[index]);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert(products[index].name + " adicionado ao carrinho!");
+}
+
+// Filtrar produtos
+function filterProducts() {
+    const search = document.getElementById("search-bar").value.toLowerCase();
+    const minPrice = parseFloat(document.getElementById("min-price").value) || 0;
+    const maxPrice = parseFloat(document.getElementById("max-price").value) || Infinity;
+    const minDiscount = parseFloat(document.getElementById("min-discount").value) || 0;
+
+    const filtered = products.filter(p => {
+        const discountedPrice = parseFloat(getDiscountedPrice(p));
+        return p.name.toLowerCase().includes(search) &&
+               discountedPrice >= minPrice &&
+               discountedPrice <= maxPrice &&
+               (p.discount || 0) >= minDiscount;
+    });
+
+    const container = document.getElementById("products-list");
+    container.innerHTML = "";
+    filtered.forEach((p, i) => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+            <div class="product-name">${p.name}</div>
+            <img src="${p.image || 'https://via.placeholder.com/150'}" alt="${p.name}">
+            <p>${p.desc}</p>
+            <p class="old-price">R$ ${p.price.toFixed(2)}</p>
+            <p class="price">R$ ${getDiscountedPrice(p)}</p>
+            ${p.coupon ? `<p>Use cupom: ${p.coupon}</p>` : ""}
+            <button onclick="addToCart(${i})">Adicionar ao Carrinho</button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+// Eventos de filtro
+document.getElementById("search-bar").addEventListener("input", filterProducts);
+document.getElementById("min-price").addEventListener("input", filterProducts);
+document.getElementById("max-price").addEventListener("input", filterProducts);
+document.getElementById("min-discount").addEventListener("input", filterProducts);
+
+// Inicial
+renderProducts();
+</script>
+
+</body>
+</html>
