@@ -34,6 +34,18 @@
             background: #0059b3;
         }
 
+        /* Aviso login rápido */
+        #aviso-rapido {
+            display: none;
+            max-width: 800px;
+            margin: 120px auto;
+            padding: 20px;
+            background: rgba(255,200,200,0.9);
+            border-radius: 16px;
+            text-align: center;
+            border: 2px solid #ff0000;
+        }
+
         /* Formulário de criação de produto */
         .create-product-container {
             max-width: 800px;
@@ -110,6 +122,12 @@
     <!-- Botão Voltar -->
     <button id="back-btn">← Voltar</button>
 
+    <!-- Aviso login rápido -->
+    <div id="aviso-rapido">
+        <h2>Atenção</h2>
+        <p>Login rápido não pode adicionar produtos. Faça login completo para vender.</p>
+    </div>
+
     <!-- Formulário para criar produtos -->
     <div class="create-product-container">
         <h2>Adicionar Produto</h2>
@@ -140,6 +158,21 @@
     </div>
 
     <script>
+        // Mostrar/ocultar formulário baseado no tipo de login
+        window.addEventListener("DOMContentLoaded", () => {
+            const tipoLogin = localStorage.getItem("tipoLogin");
+            const formContainer = document.querySelector(".create-product-container");
+            const aviso = document.getElementById("aviso-rapido");
+
+            if(tipoLogin === "completo") {
+                formContainer.style.display = "block";
+                aviso.style.display = "none";
+            } else {
+                formContainer.style.display = "none";
+                aviso.style.display = "block";
+            }
+        });
+
         // Botão voltar
         document.getElementById("back-btn").addEventListener("click", () => {
             window.location.href = "resultado.html";
