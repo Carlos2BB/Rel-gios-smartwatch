@@ -3,10 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Criar Loja - Smartwatch Store</title>
-
+<title>Minha Loja OLX Style</title>
 <style>
-/* ===== FUNDO BORRADO ===== */
 body::before {
     content: "";
     position: fixed;
@@ -15,212 +13,190 @@ body::before {
     background-image: url('https://down-br.img.susercontent.com/file/sg-11134201-7ra3f-m50llz0oztw74f');
     background-size: cover;
     background-position: center;
-    filter: blur(10px);
+    filter: blur(12px);
     z-index: -1;
     opacity: 0.4;
 }
+body { font-family: "Segoe UI", Arial, sans-serif; margin: 0; padding: 0; background: transparent; color: #1a2a40; }
+.container { max-width: 800px; margin: 40px auto; padding: 20px; background: rgba(255,255,255,0.95); border-radius: 16px; box-shadow: 0 0 20px rgba(0,0,0,0.3); }
+h1 { margin-bottom: 20px; text-align: center; }
+input, textarea, button { padding: 10px; margin: 5px 0; width: 95%; font-size: 16px; border-radius: 8px; border: 2px solid #003366; outline: none; }
+button { background: #0059b3; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+button:hover { transform: scale(1.03); box-shadow: 0 0 12px #00eaff; }
+.hidden { display: none; }
 
-body {
-    font-family: "Segoe UI", Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: transparent;
-    color: #1a2a40;
-}
-
-/* ===== HEADER ===== */
-header {
-    background: linear-gradient(to bottom, #003868, #00264d);
-    color: white;
-    text-align: center;
-    padding: 20px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.4);
-}
-
-header h1 {
-    margin: 0;
-    font-size: 28px;
-    text-shadow: 0 0 8px #00d4ff;
-}
-
-/* ===== CONTAINER ===== */
-.container {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 20px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 16px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
-}
-
-/* ===== FORMULÁRIO ===== */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-form input, form textarea, form select {
-    padding: 10px;
-    border-radius: 8px;
-    border: 2px solid #003366;
-    font-size: 16px;
-    outline: none;
-}
-
-form input:focus, form textarea:focus, form select:focus {
-    border-color: #00bfff;
-    box-shadow: 0 0 8px rgba(0,191,255,0.5);
-}
-
-form label {
-    font-weight: bold;
-    margin-bottom: 4px;
-}
-
-/* BOTÃO ENVIAR */
-button {
-    background: #0059b3;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 12px #00eaff;
-}
-
-/* LISTA DE PRODUTOS */
-.products {
-    margin-top: 40px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.product-card {
-    background: #f8fbff;
-    border: 2px solid #003366;
-    border-radius: 12px;
-    padding: 16px;
-    width: 280px;
-    box-shadow: 2px 2px 12px rgba(0,0,0,0.25);
-}
-
-.product-card img {
-    width: 100%;
-    border-radius: 8px;
-}
-
-.product-card h3 {
-    margin: 8px 0;
-    font-size: 20px;
-    color: #002244;
-}
-
-.product-card p {
-    margin: 4px 0;
-    font-size: 16px;
-}
-
-.product-card .price {
-    font-weight: bold;
-    color: #009933;
-}
-
-.product-card .discount {
-    color: #cc0000;
-    text-decoration: line-through;
-}
+/* LOJA */
+header { background: linear-gradient(to bottom, #003868, #00264d); color: white; padding: 15px; text-align: center; border-radius: 16px 16px 0 0;}
+.profile { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; justify-content: center; }
+.profile img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #003366; }
+.products { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 20px; }
+.product-card { background: #f8fbff; border: 2px solid #003366; border-radius: 12px; padding: 16px; width: 280px; box-shadow: 2px 2px 12px rgba(0,0,0,0.25); position: relative; }
+.product-card img { width: 100%; border-radius: 8px; }
+.product-card h3 { margin: 8px 0; font-size: 20px; color: #002244; }
+.product-card p { margin: 4px 0; }
+.product-card .price { font-weight: bold; color: #009933; }
+.product-card .discount { color: #cc0000; text-decoration: line-through; }
+.product-card .coupon { font-style: italic; color: #333399; }
+.product-card .views { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.2); padding: 4px 8px; border-radius: 8px; font-size: 14px; }
+.product-card .edit-btn, .product-card .delete-btn { margin-top: 8px; width: 48%; }
 </style>
 </head>
 <body>
 
-<header>
-    <h1>Criar Loja - Smartwatch Store</h1>
-</header>
+<div class="container" id="login-container">
+    <h1>Login / Cadastro</h1>
+    <input type="text" id="username" placeholder="Nome de usuário" required>
+    <input type="password" id="password" placeholder="Senha" required>
+    <button id="login-btn">Entrar / Cadastrar</button>
+</div>
 
-<div class="container">
-    <h2>Adicionar Novo Produto</h2>
+<div class="container hidden" id="store-container">
+    <header>
+        <h1>Minha Loja</h1>
+    </header>
+
+    <div class="profile">
+        <img id="profile-pic" src="https://via.placeholder.com/80x80?text=Perfil" alt="Foto de Perfil">
+        <label for="profile-upload">Alterar Foto</label>
+        <input type="file" id="profile-upload" accept="image/*">
+    </div>
+
+    <h2>Adicionar Produto</h2>
     <form id="product-form">
-        <label for="name">Nome do Produto</label>
-        <input type="text" id="name" placeholder="Ex: Relógio Ultra AI 3" required>
-
-        <label for="description">Descrição</label>
-        <textarea id="description" placeholder="Ex: Chip 5G, resistente à água" rows="3" required></textarea>
-
-        <label for="price">Preço (R$)</label>
-        <input type="number" id="price" placeholder="Ex: 349.99" step="0.01" required>
-
-        <label for="discount">Desconto (R$)</label>
-        <input type="number" id="discount" placeholder="Ex: 50.00" step="0.01">
-
-        <label for="image">URL da Imagem</label>
-        <input type="text" id="image" placeholder="Ex: https://link-da-imagem.jpg" required>
-
-        <label for="coupon">Cupom (opcional)</label>
-        <input type="text" id="coupon" placeholder="Ex: DESCONTO10">
-
+        <input type="text" id="name" placeholder="Nome do Produto" required>
+        <textarea id="description" placeholder="Descrição" rows="3" required></textarea>
+        <input type="number" id="price" placeholder="Preço (R$)" step="0.01" required>
+        <input type="number" id="discount" placeholder="Desconto (R$)" step="0.01">
+        <input type="text" id="image" placeholder="URL da Imagem" required>
+        <input type="text" id="coupon" placeholder="Cupom (opcional)">
         <button type="submit">Adicionar Produto</button>
     </form>
 
-    <div class="products" id="product-list">
-        <!-- Produtos adicionados aparecerão aqui -->
-    </div>
+    <div class="products" id="product-list"></div>
+    <button id="logout-btn" style="margin-top:20px; background:#cc0000;">Sair</button>
 </div>
 
 <script>
-// ===== CADASTRAR PRODUTOS =====
-const form = document.getElementById("product-form");
-const productList = document.getElementById("product-list");
+let loginContainer = document.getElementById("login-container");
+let storeContainer = document.getElementById("store-container");
+let loginBtn = document.getElementById("login-btn");
+let currentUser = null;
 
-// Recupera produtos do localStorage
-let products = JSON.parse(localStorage.getItem("products")) || [];
+loginBtn.addEventListener("click", () => {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+    if (!username || !password) { alert("Preencha todos os campos"); return; }
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+    if (!users[username]) { users[username] = { password, profilePic: '', products: [] }; alert("Usuário cadastrado com sucesso!"); }
+    else if (users[username].password !== password) { alert("Senha incorreta!"); return; }
+    currentUser = username;
+    loginContainer.classList.add("hidden");
+    storeContainer.classList.remove("hidden");
+    loadUserData();
+});
 
-function renderProducts() {
-    productList.innerHTML = "";
-    products.forEach((prod, i) => {
-        productList.innerHTML += `
-            <div class="product-card">
-                <img src="${prod.image}" alt="${prod.name}" onerror="this.src='https://via.placeholder.com/280x180?text=Imagem+indisponivel'">
-                <h3>${prod.name}</h3>
-                <p>${prod.description}</p>
-                <p class="price">R$ ${(prod.price - (prod.discount || 0)).toFixed(2)}</p>
-                ${prod.discount ? `<p class="discount">R$ ${prod.price.toFixed(2)}</p>` : ""}
-                ${prod.coupon ? `<p>Cupom: ${prod.coupon}</p>` : ""}
-            </div>
-        `;
-    });
-}
+document.getElementById("logout-btn").addEventListener("click", () => { currentUser = null; storeContainer.classList.add("hidden"); loginContainer.classList.remove("hidden"); });
 
-// Submeter formulário
-form.addEventListener("submit", (e) => {
+// FOTO DE PERFIL
+let profilePic = document.getElementById("profile-pic");
+let profileUpload = document.getElementById("profile-upload");
+profileUpload.addEventListener("change", e => {
+    const file = e.target.files[0];
+    if(file) {
+        const reader = new FileReader();
+        reader.onload = () => { profilePic.src = reader.result; saveUserData({ profilePic: reader.result }); };
+        reader.readAsDataURL(file);
+    }
+});
+
+// PRODUTOS
+let form = document.getElementById("product-form");
+let productList = document.getElementById("product-list");
+let editIndex = null;
+
+form.addEventListener("submit", e => {
     e.preventDefault();
-
     const newProd = {
         name: document.getElementById("name").value,
         description: document.getElementById("description").value,
         price: parseFloat(document.getElementById("price").value),
         discount: parseFloat(document.getElementById("discount").value) || 0,
         image: document.getElementById("image").value,
-        coupon: document.getElementById("coupon").value
+        coupon: document.getElementById("coupon").value,
+        views: 0
     };
-
-    products.push(newProd);
-    localStorage.setItem("products", JSON.stringify(products));
-
-    renderProducts();
+    if(editIndex !== null) {
+        updateProduct(editIndex, newProd);
+        editIndex = null;
+    } else saveUserData({ addProduct: newProd });
     form.reset();
+    renderProducts();
 });
 
-// Renderiza ao carregar a página
-renderProducts();
+function saveUserData({ profilePic, addProduct }) {
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+    if(!users[currentUser]) return;
+    if(profilePic) users[currentUser].profilePic = profilePic;
+    if(addProduct) users[currentUser].products.push(addProduct);
+    localStorage.setItem("users", JSON.stringify(users));
+}
+
+function updateProduct(index, product) {
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+    if(!users[currentUser]) return;
+    product.views = users[currentUser].products[index].views || 0;
+    users[currentUser].products[index] = product;
+    localStorage.setItem("users", JSON.stringify(users));
+}
+
+function removeProduct(index) {
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+    if(!users[currentUser]) return;
+    users[currentUser].products.splice(index,1);
+    localStorage.setItem("users", JSON.stringify(users));
+    renderProducts();
+}
+
+function loadUserData() {
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+    if(!users[currentUser]) return;
+    if(users[currentUser].profilePic) profilePic.src = users[currentUser].profilePic;
+    renderProducts();
+}
+
+function renderProducts() {
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+    let products = users[currentUser]?.products || [];
+    productList.innerHTML = "";
+    products.forEach((prod, index) => {
+        productList.innerHTML += `
+            <div class="product-card">
+                <div class="views">👁️ ${prod.views}</div>
+                <img src="${prod.image}" alt="${prod.name}" onerror="this.src='https://via.placeholder.com/280x180?text=Imagem+indisponivel'">
+                <h3>${prod.name}</h3>
+                <p>${prod.description}</p>
+                <p class="price">R$ ${(prod.price - (prod.discount || 0)).toFixed(2)}</p>
+                ${prod.discount ? `<p class="discount">R$ ${prod.price.toFixed(2)}</p>` : ""}
+                ${prod.coupon ? `<p class="coupon">Cupom: ${prod.coupon}</p>` : ""}
+                <button class="edit-btn" onclick="editProduct(${index})">Editar</button>
+                <button class="delete-btn" onclick="removeProduct(${index})" style="background:#cc0000;">Remover</button>
+            </div>
+        `;
+    });
+}
+
+// EDITAR PRODUTO
+function editProduct(index) {
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+    let prod = users[currentUser].products[index];
+    document.getElementById("name").value = prod.name;
+    document.getElementById("description").value = prod.description;
+    document.getElementById("price").value = prod.price;
+    document.getElementById("discount").value = prod.discount;
+    document.getElementById("image").value = prod.image;
+    document.getElementById("coupon").value = prod.coupon;
+    editIndex = index;
+}
 </script>
 
 </body>
