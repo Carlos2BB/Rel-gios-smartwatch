@@ -162,7 +162,6 @@
             <h2>Minha Conta</h2>
             <div id="account-info">
                 <p><strong>Nome:</strong> <span id="user-name"></span></p>
-                <p><strong>Email:</strong> <span id="user-email"></span></p>
                 <p><strong>Telefone:</strong> <span id="user-phone"></span></p>
                 <p><strong>Senha:</strong> <span id="user-password"></span></p>
             </div>
@@ -233,7 +232,7 @@
     const closeAccount = document.getElementById("close-account");
 
     const usuario = JSON.parse(localStorage.getItem("usuario")) || {};
-    const requiredFields = ["nome", "email", "telefone", "senha"];
+    const requiredFields = ["nome", "telefone", "senha"];
     const isComplete = requiredFields.every(field => usuario[field] && usuario[field].trim() !== "");
 
     accountBtn.addEventListener("click", () => {
@@ -241,7 +240,6 @@
             document.getElementById("account-info").style.display = "block";
             document.getElementById("incomplete-msg").style.display = "none";
             document.getElementById("user-name").textContent = usuario.nome;
-            document.getElementById("user-email").textContent = usuario.email;
             document.getElementById("user-phone").textContent = usuario.telefone;
             document.getElementById("user-password").textContent = usuario.senha;
         } else {
