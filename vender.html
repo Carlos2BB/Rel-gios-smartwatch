@@ -1,142 +1,225 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Minha Loja</title>
+<title>Criar Loja - Smartwatch Store</title>
+
 <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h2 { text-align: center; }
-    .product-form, .products-list, .cart { margin: 20px auto; max-width: 800px; }
-    input, textarea, button { display: block; margin: 10px 0; padding: 8px; width: 100%; }
-    .product { border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 15px; }
-    .product img { width: 100%; max-height: 200px; object-fit: cover; border-radius: 5px; }
-    .old-price { text-decoration: line-through; color: #999; }
-    .price { font-weight: bold; color: green; }
-    .filter-container input { width: 23%; display: inline-block; margin-right: 1%; }
+/* ===== FUNDO BORRADO ===== */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url('https://down-br.img.susercontent.com/file/sg-11134201-7ra3f-m50llz0oztw74f');
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px);
+    z-index: -1;
+    opacity: 0.4;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    color: #1a2a40;
+}
+
+/* ===== HEADER ===== */
+header {
+    background: linear-gradient(to bottom, #003868, #00264d);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.4);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+    text-shadow: 0 0 8px #00d4ff;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+/* ===== FORMULÁRIO ===== */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+form input, form textarea, form select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #003366;
+    font-size: 16px;
+    outline: none;
+}
+
+form input:focus, form textarea:focus, form select:focus {
+    border-color: #00bfff;
+    box-shadow: 0 0 8px rgba(0,191,255,0.5);
+}
+
+form label {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+/* BOTÃO ENVIAR */
+button {
+    background: #0059b3;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px #00eaff;
+}
+
+/* LISTA DE PRODUTOS */
+.products {
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.product-card {
+    background: #f8fbff;
+    border: 2px solid #003366;
+    border-radius: 12px;
+    padding: 16px;
+    width: 280px;
+    box-shadow: 2px 2px 12px rgba(0,0,0,0.25);
+}
+
+.product-card img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.product-card h3 {
+    margin: 8px 0;
+    font-size: 20px;
+    color: #002244;
+}
+
+.product-card p {
+    margin: 4px 0;
+    font-size: 16px;
+}
+
+.product-card .price {
+    font-weight: bold;
+    color: #009933;
+}
+
+.product-card .discount {
+    color: #cc0000;
+    text-decoration: line-through;
+}
 </style>
 </head>
 <body>
 
-<h2>Minha Loja - Gerenciar Produtos</h2>
+<header>
+    <h1>Criar Loja - Smartwatch Store</h1>
+</header>
 
-<!-- Formulário para criar produto -->
-<div class="product-form">
-    <h3>Adicionar Produto</h3>
-    <input type="text" id="name" placeholder="Nome do produto" required>
-    <textarea id="desc" placeholder="Descrição do produto"></textarea>
-    <input type="number" id="price" placeholder="Preço (R$)" required>
-    <input type="number" id="discount" placeholder="Desconto (%)" value="0">
-    <input type="text" id="image" placeholder="URL da imagem">
-    <input type="text" id="coupon" placeholder="Cupom (opcional)">
-    <button onclick="addProduct()">Adicionar Produto</button>
+<div class="container">
+    <h2>Adicionar Novo Produto</h2>
+    <form id="product-form">
+        <label for="name">Nome do Produto</label>
+        <input type="text" id="name" placeholder="Ex: Relógio Ultra AI 3" required>
+
+        <label for="description">Descrição</label>
+        <textarea id="description" placeholder="Ex: Chip 5G, resistente à água" rows="3" required></textarea>
+
+        <label for="price">Preço (R$)</label>
+        <input type="number" id="price" placeholder="Ex: 349.99" step="0.01" required>
+
+        <label for="discount">Desconto (R$)</label>
+        <input type="number" id="discount" placeholder="Ex: 50.00" step="0.01">
+
+        <label for="image">URL da Imagem</label>
+        <input type="text" id="image" placeholder="Ex: https://link-da-imagem.jpg" required>
+
+        <label for="coupon">Cupom (opcional)</label>
+        <input type="text" id="coupon" placeholder="Ex: DESCONTO10">
+
+        <button type="submit">Adicionar Produto</button>
+    </form>
+
+    <div class="products" id="product-list">
+        <!-- Produtos adicionados aparecerão aqui -->
+    </div>
 </div>
-
-<!-- Filtros de busca -->
-<div class="filter-container">
-    <input type="text" id="search-bar" placeholder="Buscar produto...">
-    <input type="number" id="min-price" placeholder="Preço mínimo">
-    <input type="number" id="max-price" placeholder="Preço máximo">
-    <input type="number" id="min-discount" placeholder="Desconto mínimo (%)">
-</div>
-
-<!-- Lista de produtos -->
-<div class="products-list" id="products-list"></div>
 
 <script>
-// Carregar produtos do localStorage
-let products = JSON.parse(localStorage.getItem("storeProducts")) || [];
+// ===== CADASTRAR PRODUTOS =====
+const form = document.getElementById("product-form");
+const productList = document.getElementById("product-list");
 
-// Função para adicionar produto
-function addProduct() {
-    const name = document.getElementById("name").value;
-    const desc = document.getElementById("desc").value;
-    const price = parseFloat(document.getElementById("price").value);
-    const discount = parseFloat(document.getElementById("discount").value) || 0;
-    const image = document.getElementById("image").value;
-    const coupon = document.getElementById("coupon").value;
+// Recupera produtos do localStorage
+let products = JSON.parse(localStorage.getItem("products")) || [];
 
-    if(!name || !price) { alert("Nome e preço são obrigatórios!"); return; }
-
-    products.push({ name, desc, price, discount, image, coupon });
-    localStorage.setItem("storeProducts", JSON.stringify(products));
-    renderProducts();
-    document.querySelector(".product-form").reset();
-}
-
-// Calcular preço com desconto
-function getDiscountedPrice(p) {
-    return (p.price * (1 - (p.discount || 0)/100)).toFixed(2);
-}
-
-// Renderizar produtos
 function renderProducts() {
-    const container = document.getElementById("products-list");
-    container.innerHTML = "";
-    products.forEach((p, i) => {
-        const div = document.createElement("div");
-        div.className = "product";
-        div.innerHTML = `
-            <div class="product-name">${p.name}</div>
-            <img src="${p.image || 'https://via.placeholder.com/150'}" alt="${p.name}">
-            <p>${p.desc}</p>
-            <p class="old-price">R$ ${p.price.toFixed(2)}</p>
-            <p class="price">R$ ${getDiscountedPrice(p)}</p>
-            ${p.coupon ? `<p>Use cupom: ${p.coupon}</p>` : ""}
-            <button onclick="addToCart(${i})">Adicionar ao Carrinho</button>
+    productList.innerHTML = "";
+    products.forEach((prod, i) => {
+        productList.innerHTML += `
+            <div class="product-card">
+                <img src="${prod.image}" alt="${prod.name}" onerror="this.src='https://via.placeholder.com/280x180?text=Imagem+indisponivel'">
+                <h3>${prod.name}</h3>
+                <p>${prod.description}</p>
+                <p class="price">R$ ${(prod.price - (prod.discount || 0)).toFixed(2)}</p>
+                ${prod.discount ? `<p class="discount">R$ ${prod.price.toFixed(2)}</p>` : ""}
+                ${prod.coupon ? `<p>Cupom: ${prod.coupon}</p>` : ""}
+            </div>
         `;
-        container.appendChild(div);
     });
 }
 
-// Carrinho
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-function addToCart(index) {
-    cart.push(products[index]);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    alert(products[index].name + " adicionado ao carrinho!");
-}
+// Submeter formulário
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-// Filtrar produtos
-function filterProducts() {
-    const search = document.getElementById("search-bar").value.toLowerCase();
-    const minPrice = parseFloat(document.getElementById("min-price").value) || 0;
-    const maxPrice = parseFloat(document.getElementById("max-price").value) || Infinity;
-    const minDiscount = parseFloat(document.getElementById("min-discount").value) || 0;
+    const newProd = {
+        name: document.getElementById("name").value,
+        description: document.getElementById("description").value,
+        price: parseFloat(document.getElementById("price").value),
+        discount: parseFloat(document.getElementById("discount").value) || 0,
+        image: document.getElementById("image").value,
+        coupon: document.getElementById("coupon").value
+    };
 
-    const filtered = products.filter(p => {
-        const discountedPrice = parseFloat(getDiscountedPrice(p));
-        return p.name.toLowerCase().includes(search) &&
-               discountedPrice >= minPrice &&
-               discountedPrice <= maxPrice &&
-               (p.discount || 0) >= minDiscount;
-    });
+    products.push(newProd);
+    localStorage.setItem("products", JSON.stringify(products));
 
-    const container = document.getElementById("products-list");
-    container.innerHTML = "";
-    filtered.forEach((p, i) => {
-        const div = document.createElement("div");
-        div.className = "product";
-        div.innerHTML = `
-            <div class="product-name">${p.name}</div>
-            <img src="${p.image || 'https://via.placeholder.com/150'}" alt="${p.name}">
-            <p>${p.desc}</p>
-            <p class="old-price">R$ ${p.price.toFixed(2)}</p>
-            <p class="price">R$ ${getDiscountedPrice(p)}</p>
-            ${p.coupon ? `<p>Use cupom: ${p.coupon}</p>` : ""}
-            <button onclick="addToCart(${i})">Adicionar ao Carrinho</button>
-        `;
-        container.appendChild(div);
-    });
-}
+    renderProducts();
+    form.reset();
+});
 
-// Eventos de filtro
-document.getElementById("search-bar").addEventListener("input", filterProducts);
-document.getElementById("min-price").addEventListener("input", filterProducts);
-document.getElementById("max-price").addEventListener("input", filterProducts);
-document.getElementById("min-discount").addEventListener("input", filterProducts);
-
-// Inicial
+// Renderiza ao carregar a página
 renderProducts();
 </script>
 
