@@ -231,12 +231,11 @@
     const accountModal = document.getElementById("account-modal");
     const closeAccount = document.getElementById("close-account");
 
+    // Pegando os dados do localStorage já salvos pelo resultado.html
     const usuario = JSON.parse(localStorage.getItem("usuario")) || {};
-    const requiredFields = ["nome", "telefone", "senha"];
-    const isComplete = requiredFields.every(field => usuario[field] && usuario[field].trim() !== "");
 
     accountBtn.addEventListener("click", () => {
-        if(isComplete) {
+        if(usuario.nome && usuario.telefone && usuario.senha) {
             document.getElementById("account-info").style.display = "block";
             document.getElementById("incomplete-msg").style.display = "none";
             document.getElementById("user-name").textContent = usuario.nome;
