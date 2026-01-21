@@ -1,132 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vender Produto</title>
-    <style>
-        /* Fundo borrado */
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: url('https://down-br.img.susercontent.com/file/sg-11134201-7ra3f-m50llz0oztw74f') no-repeat center center fixed;
-            background-size: cover;
-            backdrop-filter: blur(8px);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vender Produto</title>
 
-        /* Botão voltar */
-        #back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: 10px 16px;
-            background: #003366;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            transition: 0.3s;
-            z-index: 1000;
-        }
-        #back-btn:hover {
-            background: #0059b3;
-        }
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('https://down-br.img.susercontent.com/file/sg-11134201-7ra3f-m50llz0oztw74f') no-repeat center center fixed;
+    background-size: cover;
+    backdrop-filter: blur(8px);
+}
 
-        /* Aviso login rápido */
-        #aviso-rapido {
-            display: none;
-            max-width: 800px;
-            margin: 120px auto;
-            padding: 20px;
-            background: rgba(255,200,200,0.9);
-            border-radius: 16px;
-            text-align: center;
-            border: 2px solid #ff0000;
-        }
-
-        /* Formulário de criação de produto */
-        .create-product-container {
-            max-width: 800px;
-            margin: 120px auto 40px auto;
-            padding: 20px;
-            background: rgba(255,255,255,0.92);
-            border-radius: 16px;
-            border: 2px solid #004080;
-            box-shadow: 0 0 30px rgba(0, 51, 102, 0.45);
-        }
-
-        .create-product-container input,
-        .create-product-container textarea,
-        .create-product-container button {
-            width: 100%;
-            margin: 8px 0;
-            padding: 12px;
-            border-radius: 8px;
-            border: 2px solid #003366;
-            font-size: 16px;
-        }
-
-        .create-product-container button {
-            background: #003366;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .create-product-container button:hover {
-            background: #0059b3;
-        }
-
-        /* Produtos criados */
-        .my-products {
-            max-width: 1300px;
-            margin: auto;
-        }
-        .products {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 28px;
-        }
-        .product {
-            background: #f8fbff;
-            border-radius: 14px;
-            padding: 20px;
-            border: 2px solid #003366;
-            width: 365px;
-            box-shadow: 4px 4px 14px rgba(0,0,0,0.25), inset -2px -2px 6px rgba(255,255,255,0.6);
-        }
-        .product-name {
-            background: #003d80;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 12px;
-            border: 2px solid #002f66;
-        }
-        .price {
-            font-weight: bold;
-            color: #003366;
-            font-size: 18px;
-        }
-        .old-price {
-            text-decoration: line-through;
-            color: #a0a0a0;
-        }
-    </style>
-</head>
-<body>
-    <!-- Botão Voltar -->
-    <button id="back-btn">← Voltar</button>
-
-    <!-- Botão Minha Conta -->
-<button id="minha-conta-btn" style="
+#back-btn, #minha-conta-btn {
     position: fixed;
     top: 20px;
-    right: 20px;
     padding: 10px 16px;
     background: #003366;
     color: white;
@@ -135,170 +25,210 @@
     cursor: pointer;
     font-weight: bold;
     box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    transition: 0.3s;
-    display: none;
     z-index: 1000;
-">
-👤 Minha Conta
-</button>
+}
+#back-btn { left: 20px; }
+#minha-conta-btn { right: 20px; display: none; }
 
+#aviso-rapido {
+    display: none;
+    max-width: 800px;
+    margin: 120px auto;
+    padding: 20px;
+    background: rgba(255,200,200,0.9);
+    border-radius: 16px;
+    text-align: center;
+    border: 2px solid #ff0000;
+}
 
-    <!-- Aviso login rápido -->
-    <div id="aviso-rapido">
-        <h2>Atenção</h2>
-        <p>Login rápido não pode adicionar produtos. Faça login completo para vender.</p>
-    </div>
+.create-product-container {
+    max-width: 800px;
+    margin: 120px auto 40px auto;
+    padding: 20px;
+    background: rgba(255,255,255,0.92);
+    border-radius: 16px;
+    border: 2px solid #004080;
+}
 
-    <!-- Formulário para criar produtos -->
-    <div class="create-product-container">
-        <h2>Adicionar Produto</h2>
-        <form id="product-form">
-            <label>Nome do Produto:</label>
-            <input type="text" id="product-name" required>
+.create-product-container input,
+.create-product-container textarea,
+.create-product-container button {
+    width: 100%;
+    margin: 8px 0;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #003366;
+}
 
-            <label>Descrição:</label>
-            <textarea id="product-desc" rows="3" required></textarea>
+.create-product-container button {
+    background: #003366;
+    color: white;
+    font-weight: bold;
+}
 
-            <label>Preço (R$):</label>
-            <input type="number" id="product-price" step="0.01" required>
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+}
 
-            <label>Desconto (%):</label>
-            <input type="number" id="product-discount" step="0.01">
+.product {
+    background: #f8fbff;
+    border-radius: 14px;
+    padding: 20px;
+    border: 2px solid #003366;
+    width: 365px;
+}
 
-            <label>Foto do Produto:</label>
-            <input type="file" id="product-image" accept="image/*">
+.product-name {
+    background: #003d80;
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+}
 
-            <button type="submit">Adicionar Produto</button>
-        </form>
-    </div>
+.price {
+    font-weight: bold;
+    font-size: 18px;
+    color: #003366;
+}
 
-    <!-- Produtos adicionados -->
-    <div class="my-products">
-        <h2>Meus Produtos</h2>
-        <div id="products-list" class="products"></div>
-    </div>
+.old-price {
+    text-decoration: line-through;
+    color: #999;
+}
 
-    <script>
-        // Mostrar/ocultar formulário baseado no tipo de login
-        window.addEventListener("DOMContentLoaded", () => {
-            const tipoLogin = localStorage.getItem("tipoLogin");
-            const formContainer = document.querySelector(".create-product-container");
-            const aviso = document.getElementById("aviso-rapido");
+.delete-btn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background: #cc0000;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+</style>
+</head>
 
-            if(tipoLogin === "completo") {
-                formContainer.style.display = "block";
-                aviso.style.display = "none";
-            } else {
-                formContainer.style.display = "none";
-                aviso.style.display = "block";
-            }
-        });
+<body>
 
-        // Botão voltar
-        document.getElementById("back-btn").addEventListener("click", () => {
-            window.location.href = "resultado.html";
-        });
+<button id="back-btn">← Voltar</button>
+<button id="minha-conta-btn">👤 Minha Conta</button>
 
-        // Adicionar produtos dinamicamente
-        const productForm = document.getElementById("product-form");
-        const productsList = document.getElementById("products-list");
-
-        productForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-
-            const name = document.getElementById("product-name").value;
-            const desc = document.getElementById("product-desc").value;
-            const price = parseFloat(document.getElementById("product-price").value).toFixed(2);
-            const discount = parseFloat(document.getElementById("product-discount").value || 0).toFixed(2);
-            const imageFile = document.getElementById("product-image").files[0];
-
-            if (!name || !desc || !price) return;
-
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const imageUrl = event.target.result;
-
-                const productDiv = document.createElement("div");
-                productDiv.classList.add("product");
-                productDiv.innerHTML = `
-                    <div class="product-name">${name}</div>
-                    <img src="${imageUrl}" alt="${name}" style="width:100%; border-radius:12px; margin-bottom:12px;">
-                    <p>${desc}</p>
-                    ${discount > 0 ? `<p class="old-price">R$ ${price}</p>
-                    <p class="price">R$ ${(price - (price * discount / 100)).toFixed(2)}</p>` : `<p class="price">R$ ${price}</p>`}
-                    <button class="add-cart">Adicionar ao Carrinho</button>
-                `;
-
-                productsList.appendChild(productDiv);
-
-                // Limpar formulário
-                productForm.reset();
-            }
-
-            if (imageFile) {
-                reader.readAsDataURL(imageFile);
-            } else {
-                reader.onload({ target: { result: "https://via.placeholder.com/365x200?text=Sem+Imagem" } });
-            }
-        });
-
-document.addEventListener("DOMContentLoaded", () => {
-    const tipoLogin = localStorage.getItem("tipoLogin");
-    const btnConta = document.getElementById("minha-conta-btn");
-    const popup = document.getElementById("conta-popup");
-
-    // Só mostra se for login completo
-    if (tipoLogin === "completo") {
-        btnConta.style.display = "block";
-
-        btnConta.addEventListener("click", () => {
-            document.getElementById("mc-nome").textContent =
-                localStorage.getItem("accountName") || "—";
-            document.getElementById("mc-telefone").textContent =
-                localStorage.getItem("accountPhone") || "—";
-            document.getElementById("mc-senha").textContent =
-                localStorage.getItem("accountPass") || "—";
-
-            popup.style.display = "flex";
-        });
-    }
-});
-
-        
-    </script>
-
-<!-- Popup Minha Conta -->
-<div id="conta-popup" style="
-    display:none;
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background:rgba(0,0,0,0.6);
-    backdrop-filter: blur(6px);
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-">
-    <div style="
-        background:white;
-        padding:20px;
-        border-radius:14px;
-        width:360px;
-        text-align:center;
-        border:3px solid #003366;
-    ">
-        <h3>Minha Conta</h3>
-        <p><strong>Nome:</strong> <span id="mc-nome"></span></p>
-        <p><strong>Telefone:</strong> <span id="mc-telefone"></span></p>
-        <p><strong>Senha:</strong> <span id="mc-senha"></span></p>
-
-        <button onclick="document.getElementById('conta-popup').style.display='none'"
-            style="margin-top:12px; padding:10px; width:100%; background:#002b55; color:white; border:none; border-radius:8px;">
-            Fechar
-        </button>
-    </div>
+<div id="aviso-rapido">
+    <h2>Atenção</h2>
+    <p>Login rápido não pode adicionar produtos.</p>
 </div>
 
-    
+<div class="create-product-container">
+    <h2>Adicionar Produto</h2>
+    <form id="product-form">
+        <input id="product-name" placeholder="Nome" required>
+        <textarea id="product-desc" placeholder="Descrição" required></textarea>
+        <input id="product-price" type="number" step="0.01" placeholder="Preço" required>
+        <input id="product-discount" type="number" step="0.01" placeholder="Desconto (%)">
+        <input id="product-image" type="file" accept="image/*">
+        <button type="submit">Adicionar Produto</button>
+    </form>
+</div>
+
+<div class="my-products">
+    <h2 style="text-align:center;">Meus Produtos</h2>
+    <div id="products-list" class="products"></div>
+</div>
+
+<script>
+const STORAGE_KEY = "meusProdutos";
+
+/* 🔙 Botão voltar — SEMPRE para resultado.html */
+document.getElementById("back-btn").onclick = () => {
+    window.location.href = "resultado.html";
+};
+
+/* 🔐 Login */
+const tipoLogin = localStorage.getItem("tipoLogin");
+const aviso = document.getElementById("aviso-rapido");
+const formBox = document.querySelector(".create-product-container");
+
+if (tipoLogin !== "completo") {
+    formBox.style.display = "none";
+    aviso.style.display = "block";
+}
+
+/* 💾 Carregar produtos salvos */
+function carregarProdutos() {
+    const produtos = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    document.getElementById("products-list").innerHTML = "";
+    produtos.forEach((p, i) => renderProduto(p, i));
+}
+
+/* 🧱 Renderizar produto */
+function renderProduto(produto, index) {
+    const div = document.createElement("div");
+    div.className = "product";
+    div.innerHTML = `
+        <div class="product-name">${produto.nome}</div>
+        <img src="${produto.imagem}" style="width:100%; border-radius:12px;">
+        <p>${produto.desc}</p>
+        ${produto.desconto > 0 ? `<p class="old-price">R$ ${produto.preco}</p>` : ""}
+        <p class="price">R$ ${produto.final}</p>
+        <button class="delete-btn">Excluir Produto</button>
+    `;
+
+    div.querySelector(".delete-btn").onclick = () => excluirProduto(index);
+    document.getElementById("products-list").appendChild(div);
+}
+
+/* ➕ Adicionar produto */
+document.getElementById("product-form").onsubmit = e => {
+    e.preventDefault();
+
+    const nome = document.getElementById("product-name").value;
+    const desc = document.getElementById("product-desc").value;
+    const preco = parseFloat(document.getElementById("product-price").value);
+    const desconto = parseFloat(document.getElementById("product-discount").value || 0);
+    const imagemInput = document.getElementById("product-image").files[0];
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        const final = (preco - (preco * desconto / 100)).toFixed(2);
+
+        const produto = {
+            nome,
+            desc,
+            preco: preco.toFixed(2),
+            desconto,
+            final,
+            imagem: reader.result || "https://via.placeholder.com/365x200"
+        };
+
+        const lista = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        lista.push(produto);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+
+        carregarProdutos();
+        e.target.reset();
+    };
+
+    imagemInput
+        ? reader.readAsDataURL(imagemInput)
+        : reader.onload();
+};
+
+/* 🗑️ Excluir produto */
+function excluirProduto(index) {
+    const lista = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    lista.splice(index, 1);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+    carregarProdutos();
+}
+
+carregarProdutos();
+</script>
+
 </body>
 </html>
