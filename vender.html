@@ -13,28 +13,40 @@
             backdrop-filter: blur(8px);
         }
 
-        /* Botões fixos */
-        #back-btn, #account-btn {
-            position: fixed;
-            top: 20px;
-            padding: 10px 16px;
-            background: #003366;
-            color: white;
+        /* Botões */
+        button {
+            cursor: pointer;
             border: none;
             border-radius: 8px;
-            cursor: pointer;
+            padding: 10px 16px;
             font-weight: bold;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
             transition: 0.3s;
+        }
+
+        #back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #003366;
+            color: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
             z-index: 1000;
         }
-        #back-btn:hover, #account-btn:hover { background: #0059b3; }
-        #back-btn { left: 20px; }
-        #account-btn { right: 20px; }
+        #back-btn:hover { background: #0059b3; }
 
-        /* Aviso login rápido */
-        #aviso-rapido {
-            display: none;
+        #account-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #004080;
+            color: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        #account-btn:hover { background: #0066cc; }
+
+        /* Avisos */
+        #aviso-rapido, #incomplete-msg {
             max-width: 800px;
             margin: 120px auto;
             padding: 20px;
@@ -44,7 +56,7 @@
             border: 2px solid #ff0000;
         }
 
-        /* Formulário de criação de produto */
+        /* Formulário */
         .create-product-container {
             max-width: 800px;
             margin: 120px auto 40px auto;
@@ -69,13 +81,12 @@
         .create-product-container button {
             background: #003366;
             color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
         }
-        .create-product-container button:hover { background: #0059b3; }
+        .create-product-container button:hover {
+            background: #0059b3;
+        }
 
-        /* Produtos criados */
+        /* Produtos */
         .my-products {
             max-width: 1300px;
             margin: auto;
@@ -113,70 +124,54 @@
             text-decoration: line-through;
             color: #a0a0a0;
         }
-        .delete-btn {
-            background: #b30000;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 12px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 10px;
-            transition: 0.3s;
-        }
-        .delete-btn:hover { background: #ff0000; }
 
-        /* Modal Minha Conta */
-        #account-modal {
-            display: none;
-            position: fixed;
-            top:0; left:0;
-            width:100%; height:100%;
-            background: rgba(0,0,0,0.5);
-            z-index:2000;
-            justify-content:center;
-            align-items:center;
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #cc0000;
+            color: white;
+            padding: 6px 10px;
+            font-size: 12px;
         }
-        #account-modal-content {
-            background:white; 
-            padding:30px; 
-            border-radius:16px; 
-            max-width:400px; 
-            width:90%; 
-            position:relative;
-        }
-        #close-account {
-            background:#003366; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-weight:bold;
+        .delete-btn:hover { background: #ff3333; }
+
+        /* Conta */
+        #account-info {
+            max-width: 400px;
+            margin: 120px auto;
+            padding: 20px;
+            background: rgba(200,255,200,0.95);
+            border-radius: 16px;
+            border: 2px solid #009900;
         }
     </style>
 </head>
 <body>
-
-    <!-- Botões fixos -->
+    <!-- Botões -->
     <button id="back-btn">← Voltar</button>
     <button id="account-btn">Minha Conta</button>
 
-    <!-- Modal da Conta -->
-    <div id="account-modal">
-        <div id="account-modal-content">
-            <h2>Minha Conta</h2>
-            <div id="account-info">
-                <p><strong>Nome:</strong> <span id="user-name"></span></p>
-                <p><strong>Telefone:</strong> <span id="user-phone"></span></p>
-                <p><strong>Senha:</strong> <span id="user-password"></span></p>
-            </div>
-            <p id="incomplete-msg" style="color:red; display:none;">Informações da conta incompletas.</p>
-            <button id="close-account">Fechar</button>
-        </div>
-    </div>
-
-    <!-- Aviso login rápido -->
-    <div id="aviso-rapido">
+    <!-- Avisos -->
+    <div id="aviso-rapido" style="display:none;">
         <h2>Atenção</h2>
         <p>Login rápido não pode adicionar produtos. Faça login completo para vender.</p>
     </div>
 
-    <!-- Formulário para criar produtos -->
+    <div id="incomplete-msg" style="display:none;">
+        <h2>Conta incompleta</h2>
+        <p>Suas informações de conta estão incompletas. Complete antes de vender produtos.</p>
+    </div>
+
+    <!-- Conta -->
+    <div id="account-info" style="display:none;">
+        <h2>Informações da Conta</h2>
+        <p><strong>Nome:</strong> <span id="user-name"></span></p>
+        <p><strong>Telefone:</strong> <span id="user-phone"></span></p>
+        <p><strong>Senha:</strong> <span id="user-password"></span></p>
+    </div>
+
+    <!-- Formulário de criação de produto -->
     <div class="create-product-container">
         <h2>Adicionar Produto</h2>
         <form id="product-form">
@@ -205,113 +200,102 @@
         <div id="products-list" class="products"></div>
     </div>
 
-<script>
-    // -------------------- LOGIN CHECK --------------------
-    window.addEventListener("DOMContentLoaded", () => {
+    <script>
+        // BOTÃO VOLTAR
+        document.getElementById("back-btn").addEventListener("click", () => {
+            window.location.href = "resultado.html";
+        });
+
+        // BOTÃO MINHA CONTA
+        const accountBtn = document.getElementById("account-btn");
+        const accountInfo = document.getElementById("account-info");
+        const incompleteMsg = document.getElementById("incomplete-msg");
+
+        accountBtn.addEventListener("click", () => {
+            accountInfo.style.display = accountInfo.style.display === "block" ? "none" : "block";
+            incompleteMsg.style.display = "none";
+        });
+
+        // MOSTRAR INFORMAÇÕES DO USUÁRIO
+        const usuario = JSON.parse(localStorage.getItem("usuario")) || {};
+        if(usuario.nome && usuario.telefone && usuario.senha){
+            accountInfo.style.display = "block";
+            incompleteMsg.style.display = "none";
+            document.getElementById("user-name").textContent = usuario.nome;
+            document.getElementById("user-phone").textContent = usuario.telefone;
+            document.getElementById("user-password").textContent = usuario.senha;
+        } else {
+            accountInfo.style.display = "none";
+            incompleteMsg.style.display = "block";
+        }
+
+        // VERIFICAR TIPO DE LOGIN
         const tipoLogin = localStorage.getItem("tipoLogin");
         const formContainer = document.querySelector(".create-product-container");
         const aviso = document.getElementById("aviso-rapido");
-
-        if(tipoLogin === "completo") {
+        if(tipoLogin === "completo"){
             formContainer.style.display = "block";
             aviso.style.display = "none";
         } else {
             formContainer.style.display = "none";
             aviso.style.display = "block";
         }
-    });
 
-    // -------------------- BOTÃO VOLTAR --------------------
-    document.getElementById("back-btn").addEventListener("click", () => {
-        window.location.href = "resultado.html";
-    });
+        // CARREGAR PRODUTOS DO LOCALSTORAGE
+        const productsList = document.getElementById("products-list");
+        let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
 
-    // -------------------- BOTÃO MINHA CONTA --------------------
-    const accountBtn = document.getElementById("account-btn");
-    const accountModal = document.getElementById("account-modal");
-    const closeAccount = document.getElementById("close-account");
-
-    // Pegando os dados do localStorage já salvos pelo resultado.html
-    const usuario = JSON.parse(localStorage.getItem("usuario")) || {};
-
-    accountBtn.addEventListener("click", () => {
-        if(usuario.nome && usuario.telefone && usuario.senha) {
-            document.getElementById("account-info").style.display = "block";
-            document.getElementById("incomplete-msg").style.display = "none";
-            document.getElementById("user-name").textContent = usuario.nome;
-            document.getElementById("user-phone").textContent = usuario.telefone;
-            document.getElementById("user-password").textContent = usuario.senha;
-        } else {
-            document.getElementById("account-info").style.display = "none";
-            document.getElementById("incomplete-msg").style.display = "block";
+        function renderProducts(){
+            productsList.innerHTML = "";
+            produtos.forEach((produto, index) => {
+                const productDiv = document.createElement("div");
+                productDiv.classList.add("product");
+                productDiv.innerHTML = `
+                    <div class="product-name">${produto.name}</div>
+                    <img src="${produto.image}" alt="${produto.name}" style="width:100%; border-radius:12px; margin-bottom:12px;">
+                    <p>${produto.desc}</p>
+                    ${produto.discount > 0 ? `<p class="old-price">R$ ${produto.price}</p>
+                    <p class="price">R$ ${(produto.price - (produto.price * produto.discount / 100)).toFixed(2)}</p>` : `<p class="price">R$ ${produto.price}</p>`}
+                    <button class="add-cart">Adicionar ao Carrinho</button>
+                    <button class="delete-btn">Excluir</button>
+                `;
+                // Deletar produto
+                productDiv.querySelector(".delete-btn").addEventListener("click", () => {
+                    produtos.splice(index, 1);
+                    localStorage.setItem("produtos", JSON.stringify(produtos));
+                    renderProducts();
+                });
+                productsList.appendChild(productDiv);
+            });
         }
-        accountModal.style.display = "flex";
-    });
+        renderProducts();
 
-    closeAccount.addEventListener("click", () => { accountModal.style.display = "none"; });
-    window.addEventListener("click", (e) => { if(e.target === accountModal) accountModal.style.display = "none"; });
+        // ADICIONAR NOVO PRODUTO
+        const productForm = document.getElementById("product-form");
+        productForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const name = document.getElementById("product-name").value;
+            const desc = document.getElementById("product-desc").value;
+            const price = parseFloat(document.getElementById("product-price").value).toFixed(2);
+            const discount = parseFloat(document.getElementById("product-discount").value || 0).toFixed(2);
+            const imageFile = document.getElementById("product-image").files[0];
 
-    // -------------------- GERENCIAR PRODUTOS --------------------
-    const productForm = document.getElementById("product-form");
-    const productsList = document.getElementById("products-list");
+            if(!name || !desc || !price) return;
 
-    function salvarProdutos(produtos) { localStorage.setItem("meusProdutos", JSON.stringify(produtos)); }
-
-    function carregarProdutos() {
-        productsList.innerHTML = "";
-        const produtos = JSON.parse(localStorage.getItem("meusProdutos")) || [];
-        produtos.forEach((produto, index) => {
-            const productDiv = document.createElement("div");
-            productDiv.classList.add("product");
-            productDiv.innerHTML = `
-                <div class="product-name">${produto.name}</div>
-                <img src="${produto.image}" alt="${produto.name}" style="width:100%; border-radius:12px; margin-bottom:12px;">
-                <p>${produto.desc}</p>
-                ${produto.discount > 0 ? `<p class="old-price">R$ ${produto.price}</p>
-                <p class="price">R$ ${(produto.price - (produto.price * produto.discount / 100)).toFixed(2)}</p>` : `<p class="price">R$ ${produto.price}</p>`}
-                <button class="delete-btn" data-index="${index}">Excluir Produto</button>
-            `;
-            productsList.appendChild(productDiv);
+            const reader = new FileReader();
+            reader.onload = function(event){
+                const imageUrl = event.target.result;
+                produtos.push({ name, desc, price, discount, image: imageUrl });
+                localStorage.setItem("produtos", JSON.stringify(produtos));
+                renderProducts();
+                productForm.reset();
+            }
+            if(imageFile){
+                reader.readAsDataURL(imageFile);
+            } else {
+                reader.onload({ target: { result: "https://via.placeholder.com/365x200?text=Sem+Imagem" } });
+            }
         });
-    }
-
-    carregarProdutos();
-
-    productForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        const name = document.getElementById("product-name").value;
-        const desc = document.getElementById("product-desc").value;
-        const price = parseFloat(document.getElementById("product-price").value).toFixed(2);
-        const discount = parseFloat(document.getElementById("product-discount").value || 0).toFixed(2);
-        const imageFile = document.getElementById("product-image").files[0];
-
-        if (!name || !desc || !price) return;
-
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const imageUrl = event.target.result;
-
-            const produtos = JSON.parse(localStorage.getItem("meusProdutos")) || [];
-            produtos.push({ name, desc, price, discount, image: imageUrl });
-            salvarProdutos(produtos);
-            carregarProdutos();
-            productForm.reset();
-        }
-
-        if (imageFile) reader.readAsDataURL(imageFile);
-        else reader.onload({ target: { result: "https://via.placeholder.com/365x200?text=Sem+Imagem" } });
-    });
-
-    productsList.addEventListener("click", (e) => {
-        if(e.target.classList.contains("delete-btn")) {
-            const index = e.target.dataset.index;
-            const produtos = JSON.parse(localStorage.getItem("meusProdutos")) || [];
-            produtos.splice(index, 1);
-            salvarProdutos(produtos);
-            carregarProdutos();
-        }
-    });
-</script>
+    </script>
 </body>
 </html>
