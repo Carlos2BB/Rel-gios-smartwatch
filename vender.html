@@ -14,6 +14,7 @@ body {
     backdrop-filter: blur(8px);
 }
 
+/* Botões topo */
 #back-btn, #minha-conta-btn {
     position: fixed;
     top: 20px;
@@ -111,6 +112,27 @@ body {
     cursor: pointer;
     font-weight: bold;
 }
+
+/* Popup conta */
+#conta-popup {
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter: blur(6px);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+#conta-box {
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    width:360px;
+    text-align:center;
+    border:3px solid #003366;
+}
 </style>
 </head>
 
@@ -141,32 +163,62 @@ body {
     <div id="products-list" class="products"></div>
 </div>
 
+<!-- Popup Minha Conta -->
+<div id="conta-popup">
+    <div id="conta-box">
+        <h3>Minha Conta</h3>
+        <p><strong>Nome:</strong> <span id="mc-nome"></span></p>
+        <p><strong>Telefone:</strong> <span id="mc-telefone"></span></p>
+        <p><strong>Senha:</strong> <span id="mc-senha"></span></p>
+        <button onclick="document.getElementById('conta-popup').style.display='none'"
+            style="margin-top:12px; padding:10px; width:100%; background:#002b55; color:white; border:none; border-radius:8px;">
+            Fechar
+        </button>
+    </div>
+</div>
+
 <script>
 const STORAGE_KEY = "meusProdutos";
 
-/* 🔙 Botão voltar — SEMPRE para resultado.html */
+/* 🔙 Voltar */
 document.getElementById("back-btn").onclick = () => {
     window.location.href = "resultado.html";
 };
 
-/* 🔐 Login */
+/* 🔐 Login + Minha Conta */
 const tipoLogin = localStorage.getItem("tipoLogin");
 const aviso = document.getElementById("aviso-rapido");
 const formBox = document.querySelector(".create-product-container");
+const btnConta = document.getElementById("minha-conta-btn");
+const popupConta = document.getElementById("conta-popup");
 
-if (tipoLogin !== "completo") {
+if (tipoLogin === "completo") {
+    btnConta.style.display = "block";
+
+    btnConta.onclick = () => {
+        document.getElementById("mc-nome").textContent =
+            localStorage.getItem("accountName") || "—";
+        document.getElementById("mc-telefone").textContent =
+            localStorage.getItem("accountPhone") || "—";
+        document.getElementById("mc-senha").textContent =
+            localStorage.getItem("accountPass") || "—";
+
+        popupConta.style.display = "flex";
+    };
+} else {
     formBox.style.display = "none";
     aviso.style.display = "block";
 }
 
-/* 💾 Carregar produtos salvos */
+/* 💾 Carregar produtos */
 function carregarProdutos() {
     const produtos = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    document.getElementById("products-list").innerHTML = "";
+    const lista = document.getElementById("products-list");
+    lista.innerHTML = "";
     produtos.forEach((p, i) => renderProduto(p, i));
 }
 
-/* 🧱 Renderizar produto */
+/* 🧱 Render */
 function renderProduto(produto, index) {
     const div = document.createElement("div");
     div.className = "product";
@@ -178,48 +230,42 @@ function renderProduto(produto, index) {
         <p class="price">R$ ${produto.final}</p>
         <button class="delete-btn">Excluir Produto</button>
     `;
-
     div.querySelector(".delete-btn").onclick = () => excluirProduto(index);
     document.getElementById("products-list").appendChild(div);
 }
 
-/* ➕ Adicionar produto */
+/* ➕ Adicionar */
 document.getElementById("product-form").onsubmit = e => {
     e.preventDefault();
 
-    const nome = document.getElementById("product-name").value;
-    const desc = document.getElementById("product-desc").value;
-    const preco = parseFloat(document.getElementById("product-price").value);
-    const desconto = parseFloat(document.getElementById("product-discount").value || 0);
-    const imagemInput = document.getElementById("product-image").files[0];
+    const nome = product-name.value;
+    const desc = product-desc.value;
+    const preco = parseFloat(product-price.value);
+    const desconto = parseFloat(product-discount.value || 0);
+    const imgFile = product-image.files[0];
 
     const reader = new FileReader();
     reader.onload = () => {
-        const final = (preco - (preco * desconto / 100)).toFixed(2);
-
         const produto = {
             nome,
             desc,
             preco: preco.toFixed(2),
             desconto,
-            final,
+            final: (preco - preco * desconto / 100).toFixed(2),
             imagem: reader.result || "https://via.placeholder.com/365x200"
         };
 
         const lista = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
         lista.push(produto);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
-
         carregarProdutos();
         e.target.reset();
     };
 
-    imagemInput
-        ? reader.readAsDataURL(imagemInput)
-        : reader.onload();
+    imgFile ? reader.readAsDataURL(imgFile) : reader.onload();
 };
 
-/* 🗑️ Excluir produto */
+/* 🗑️ Excluir */
 function excluirProduto(index) {
     const lista = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
     lista.splice(index, 1);
