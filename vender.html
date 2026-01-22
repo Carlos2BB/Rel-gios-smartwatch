@@ -255,46 +255,5 @@ document.getElementById("product-form").addEventListener("submit", e => {
 });
 </script>
 
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const addBtn = document.getElementById("add-product"); // botão de adicionar produto
-
-    addBtn.addEventListener("click", function () {
-        const nome = document.getElementById("nome").value;
-        const preco = parseFloat(document.getElementById("preco").value);
-        const desc = document.getElementById("desc").value;
-        const imagem = document.getElementById("imagem").value;
-
-        if(!nome || !preco){
-            alert("Preencha pelo menos nome e preço!");
-            return;
-        }
-
-        // Pega produtos já salvos
-        let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
-
-        // Adiciona novo produto
-        produtos.push({
-            name: nome,
-            price: preco,
-            desc: desc,
-            image: imagem || "", // se não colocar imagem, usa placeholder
-            discount: 0
-        });
-
-        // Salva no localStorage
-        localStorage.setItem("produtos", JSON.stringify(produtos));
-
-        alert("Produto adicionado com sucesso!");
-        
-        // Limpa os campos do formulário
-        document.getElementById("nome").value = "";
-        document.getElementById("preco").value = "";
-        document.getElementById("desc").value = "";
-        document.getElementById("imagem").value = "";
-    });
-});
-</script>
-
 </body>
 </html>
