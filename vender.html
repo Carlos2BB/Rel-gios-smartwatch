@@ -135,6 +135,20 @@
             font-size: 12px;
         }
         .delete-btn:hover { background: #ff3333; }
+
+        .buy-btn {
+            background: #00b300;
+            color: white;
+            padding: 8px 12px;
+            font-size: 14px;
+            margin-top: 8px;
+            width: calc(100% - 16px);
+            border-radius: 8px;
+            border: none;
+        }
+        .buy-btn:hover {
+            background: #00ff00;
+        }
     </style>
 </head>
 
@@ -218,12 +232,22 @@ function renderProducts() {
                 : `<p class="price">R$ ${produto.price}</p>`
             }
             <button class="delete-btn">Excluir</button>
+            <button class="buy-btn">Comprar</button>
         `;
+
+        // Botão excluir
         div.querySelector(".delete-btn").onclick = () => {
             produtos.splice(index, 1);
             localStorage.setItem("produtos", JSON.stringify(produtos));
             renderProducts();
         };
+
+        // Botão comprar - salva o produto selecionado e redireciona
+        div.querySelector(".buy-btn").onclick = () => {
+            localStorage.setItem("produtoSelecionado", JSON.stringify(produto));
+            window.location.href = "finalizar.html";
+        };
+
         productsList.appendChild(div);
     });
 }
