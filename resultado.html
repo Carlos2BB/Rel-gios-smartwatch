@@ -716,6 +716,40 @@ if (accountBtn) {
 const searchBar = document.getElementById("search-bar");
 const products = document.querySelectorAll(".product");
 
+// -------------------- COLE AQUI ABAIXO --------------------
+const produtosVendidos = JSON.parse(localStorage.getItem("produtos")) || [];
+const productsContainer = document.querySelector(".products");
+
+produtosVendidos.forEach(produto => {
+
+    const precoFinal =
+        produto.discount > 0
+        ? (produto.price - (produto.price * produto.discount / 100)).toFixed(2)
+        : produto.price;
+
+    const div = document.createElement("div");
+    div.className = "product";
+
+    div.innerHTML = `
+        <div class="product-name">${produto.name}</div>
+        <img src="${produto.image}"
+             style="width:100%; border-radius:12px; margin-bottom:12px;"
+             onerror="this.src='https://via.placeholder.com/365x200?text=Sem+Imagem'">
+        <p>${produto.desc}</p>
+        ${produto.discount > 0 ? `<p class="old-price">R$ ${produto.price}</p>` : ""}
+        <p class="price">R$ ${precoFinal}</p>
+        <button class="add-cart">Adicionar ao Carrinho</button>
+    `;
+
+    div.querySelector(".add-cart").addEventListener("click", () => {
+        addToCart(produto.name, precoFinal);
+    });
+
+    productsContainer.appendChild(div);
+});
+// -------------------- FIM --------------------
+
+    
 if (searchBar) {
     searchBar.addEventListener("input", () => {
         const searchValue = searchBar.value.toLowerCase().trim();
