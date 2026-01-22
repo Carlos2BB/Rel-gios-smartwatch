@@ -180,7 +180,6 @@ document.getElementById("back-btn").addEventListener("click", () => {
 /* BOAS-VINDAS */
 const welcomeMsg = document.getElementById("welcome-msg");
 const nomeUsuario = localStorage.getItem("accountName");
-
 if (welcomeMsg) {
     welcomeMsg.textContent = nomeUsuario
         ? `Seja bem-vindo, ${nomeUsuario}`
@@ -234,24 +233,26 @@ renderProducts();
 document.getElementById("product-form").addEventListener("submit", e => {
     e.preventDefault();
 
-    const reader = new FileReader();
     const file = document.getElementById("product-image").files[0];
+    const name = document.getElementById("product-name").value;
+    const desc = document.getElementById("product-desc").value;
+    const price = parseFloat(document.getElementById("product-price").value).toFixed(2);
+    const discount = parseFloat(document.getElementById("product-discount").value || 0);
 
-    reader.onload = ev => {
-        produtos.push({
-            name: product-name.value,
-            desc: product-desc.value,
-            price: parseFloat(product-price.value).toFixed(2),
-            discount: parseFloat(product-discount.value || 0),
-            image: ev.target.result
-        });
+    const addProduct = (imageSrc) => {
+        produtos.push({ name, desc, price, discount, image: imageSrc });
         localStorage.setItem("produtos", JSON.stringify(produtos));
         renderProducts();
         e.target.reset();
     };
 
-    if (file) reader.readAsDataURL(file);
-    else reader.onload({ target: { result: "https://via.placeholder.com/365x200" } });
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = ev => addProduct(ev.target.result);
+        reader.readAsDataURL(file);
+    } else {
+        addProduct("https://via.placeholder.com/365x200");
+    }
 });
 </script>
 
