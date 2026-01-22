@@ -463,6 +463,29 @@ h2 {
 </div> <!-- fim .container -->
 
 <script>
+
+// Adiciona produtos criados pelo usuário
+const produtosVendidos = JSON.parse(localStorage.getItem("produtos")) || [];
+const productsContainer = document.querySelector(".products");
+
+produtosVendidos.forEach(produto => {
+    const div = document.createElement("div");
+    div.className = "product";
+    div.innerHTML = `
+        <div class="product-name">${produto.name}</div>
+        <img src="${produto.image}" style="width:100%; border-radius:12px; margin-bottom:12px;"
+            onerror="this.src='https://via.placeholder.com/365x200?text=Sem+Imagem'">
+        <p>${produto.desc}</p>
+        <p class="price">R$ ${produto.price}</p>
+        <button class="add-cart">Adicionar ao Carrinho</button>
+    `;
+    div.querySelector(".add-cart").addEventListener("click", () => {
+        addToCart(produto.name, produto.price);
+    });
+    productsContainer.appendChild(div);
+});
+
+    
 document.addEventListener("DOMContentLoaded", function () {
     /* ===== MENU DROPDOWN ===== */
     const menuBtn = document.getElementById("menu-btn");
