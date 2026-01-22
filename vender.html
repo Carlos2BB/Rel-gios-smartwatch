@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vender Produto</title>
+
     <style>
         body {
             margin: 0;
@@ -33,9 +34,19 @@
         }
         #back-btn:hover { background: #0059b3; }
 
-        #aviso-rapido, #incomplete-msg {
+        /* BOAS-VINDAS */
+        #welcome-msg {
+            text-align: center;
+            margin-top: 90px;
+            color: #003366;
+            text-shadow: 0 0 6px #00bfff;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        #aviso-rapido {
             max-width: 800px;
-            margin: 120px auto;
+            margin: 40px auto;
             padding: 20px;
             background: rgba(255,200,200,0.9);
             border-radius: 16px;
@@ -45,7 +56,7 @@
 
         .create-product-container {
             max-width: 800px;
-            margin: 120px auto 40px auto;
+            margin: 40px auto;
             padding: 20px;
             background: rgba(255,255,255,0.92);
             border-radius: 16px;
@@ -126,108 +137,123 @@
         .delete-btn:hover { background: #ff3333; }
     </style>
 </head>
+
 <body>
 
-    <!-- Botão Voltar -->
-    <button id="back-btn">← Voltar</button>
+<!-- BOTÃO VOLTAR -->
+<button id="back-btn">← Voltar</button>
 
-    <!-- Avisos -->
-    <div id="aviso-rapido" style="display:none;">
-        <h2>Atenção</h2>
-        <p>Login rápido não pode adicionar produtos. Faça login completo para vender.</p>
-    </div>
+<!-- MENSAGEM DE BOAS-VINDAS -->
+<h2 id="welcome-msg"></h2>
 
-    <div id="incomplete-msg" style="display:none;">
-        <h2>Conta incompleta</h2>
-        <p>Suas informações de conta estão incompletas.</p>
-    </div>
+<!-- AVISO LOGIN RÁPIDO -->
+<div id="aviso-rapido" style="display:none;">
+    <h2>Atenção</h2>
+    <p>Login rápido não pode adicionar produtos. Faça login completo para vender.</p>
+</div>
 
-    <!-- Formulário -->
-    <div class="create-product-container">
-        <h2>Adicionar Produto</h2>
-        <form id="product-form">
-            <input type="text" id="product-name" placeholder="Nome do Produto" required>
-            <textarea id="product-desc" rows="3" placeholder="Descrição" required></textarea>
-            <input type="number" id="product-price" step="0.01" placeholder="Preço (R$)" required>
-            <input type="number" id="product-discount" step="0.01" placeholder="Desconto (%)">
-            <input type="file" id="product-image" accept="image/*">
-            <button type="submit">Adicionar Produto</button>
-        </form>
-    </div>
+<!-- FORMULÁRIO -->
+<div class="create-product-container">
+    <h2>Adicionar Produto</h2>
+    <form id="product-form">
+        <input type="text" id="product-name" placeholder="Nome do Produto" required>
+        <textarea id="product-desc" rows="3" placeholder="Descrição" required></textarea>
+        <input type="number" id="product-price" step="0.01" placeholder="Preço (R$)" required>
+        <input type="number" id="product-discount" step="0.01" placeholder="Desconto (%)">
+        <input type="file" id="product-image" accept="image/*">
+        <button type="submit">Adicionar Produto</button>
+    </form>
+</div>
 
-    <!-- Produtos -->
-    <div class="my-products">
-        <h2>Meus Produtos</h2>
-        <div id="products-list" class="products"></div>
-    </div>
+<!-- PRODUTOS -->
+<div class="my-products">
+    <h2>Meus Produtos</h2>
+    <div id="products-list" class="products"></div>
+</div>
 
-    <script>
-        document.getElementById("back-btn").addEventListener("click", () => {
-            window.location.href = "resultado.html";
+<script>
+/* VOLTAR */
+document.getElementById("back-btn").addEventListener("click", () => {
+    window.location.href = "resultado.html";
+});
+
+/* BOAS-VINDAS */
+const welcomeMsg = document.getElementById("welcome-msg");
+const nomeUsuario = localStorage.getItem("accountName");
+
+if (welcomeMsg) {
+    welcomeMsg.textContent = nomeUsuario
+        ? `Seja bem-vindo, ${nomeUsuario}`
+        : "Seja bem-vindo!";
+}
+
+/* LOGIN */
+const tipoLogin = localStorage.getItem("tipoLogin");
+const formContainer = document.querySelector(".create-product-container");
+const aviso = document.getElementById("aviso-rapido");
+
+if (tipoLogin === "completo") {
+    formContainer.style.display = "block";
+    aviso.style.display = "none";
+} else {
+    formContainer.style.display = "none";
+    aviso.style.display = "block";
+}
+
+/* PRODUTOS */
+const productsList = document.getElementById("products-list");
+let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
+
+function renderProducts() {
+    productsList.innerHTML = "";
+    produtos.forEach((produto, index) => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+            <div class="product-name">${produto.name}</div>
+            <img src="${produto.image}" style="width:100%; border-radius:12px;">
+            <p>${produto.desc}</p>
+            ${produto.discount > 0
+                ? `<p class="old-price">R$ ${produto.price}</p>
+                   <p class="price">R$ ${(produto.price - produto.price * produto.discount / 100).toFixed(2)}</p>`
+                : `<p class="price">R$ ${produto.price}</p>`
+            }
+            <button class="delete-btn">Excluir</button>
+        `;
+        div.querySelector(".delete-btn").onclick = () => {
+            produtos.splice(index, 1);
+            localStorage.setItem("produtos", JSON.stringify(produtos));
+            renderProducts();
+        };
+        productsList.appendChild(div);
+    });
+}
+renderProducts();
+
+/* ADICIONAR PRODUTO */
+document.getElementById("product-form").addEventListener("submit", e => {
+    e.preventDefault();
+
+    const reader = new FileReader();
+    const file = document.getElementById("product-image").files[0];
+
+    reader.onload = ev => {
+        produtos.push({
+            name: product-name.value,
+            desc: product-desc.value,
+            price: parseFloat(product-price.value).toFixed(2),
+            discount: parseFloat(product-discount.value || 0),
+            image: ev.target.result
         });
-
-        const tipoLogin = localStorage.getItem("tipoLogin");
-        const formContainer = document.querySelector(".create-product-container");
-        const aviso = document.getElementById("aviso-rapido");
-
-        if (tipoLogin === "completo") {
-            formContainer.style.display = "block";
-            aviso.style.display = "none";
-        } else {
-            formContainer.style.display = "none";
-            aviso.style.display = "block";
-        }
-
-        const productsList = document.getElementById("products-list");
-        let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
-
-        function renderProducts() {
-            productsList.innerHTML = "";
-            produtos.forEach((produto, index) => {
-                const div = document.createElement("div");
-                div.className = "product";
-                div.innerHTML = `
-                    <div class="product-name">${produto.name}</div>
-                    <img src="${produto.image}" style="width:100%; border-radius:12px;">
-                    <p>${produto.desc}</p>
-                    ${produto.discount > 0 
-                        ? `<p class="old-price">R$ ${produto.price}</p>
-                           <p class="price">R$ ${(produto.price - produto.price * produto.discount / 100).toFixed(2)}</p>`
-                        : `<p class="price">R$ ${produto.price}</p>`
-                    }
-                    <button class="delete-btn">Excluir</button>
-                `;
-                div.querySelector(".delete-btn").onclick = () => {
-                    produtos.splice(index, 1);
-                    localStorage.setItem("produtos", JSON.stringify(produtos));
-                    renderProducts();
-                };
-                productsList.appendChild(div);
-            });
-        }
+        localStorage.setItem("produtos", JSON.stringify(produtos));
         renderProducts();
+        e.target.reset();
+    };
 
-        document.getElementById("product-form").addEventListener("submit", e => {
-            e.preventDefault();
-            const reader = new FileReader();
-            const file = document.getElementById("product-image").files[0];
+    if (file) reader.readAsDataURL(file);
+    else reader.onload({ target: { result: "https://via.placeholder.com/365x200" } });
+});
+</script>
 
-            reader.onload = ev => {
-                produtos.push({
-                    name: product-name.value,
-                    desc: product-desc.value,
-                    price: parseFloat(product-price.value).toFixed(2),
-                    discount: parseFloat(product-discount.value || 0),
-                    image: ev.target.result
-                });
-                localStorage.setItem("produtos", JSON.stringify(produtos));
-                renderProducts();
-                e.target.reset();
-            };
-
-            if (file) reader.readAsDataURL(file);
-            else reader.onload({ target: { result: "https://via.placeholder.com/365x200" } });
-        });
-    </script>
 </body>
 </html>
