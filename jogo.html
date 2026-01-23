@@ -2,31 +2,27 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Máquina de Prêmios</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>Máquina de Prêmios Realista</title>
 <style>
 :root{
     --blue:#00cfff;
     --dark:#021427;
     --metal:#bfc7d5;
 }
-
 body{
     margin:0;
     font-family:"Segoe UI",Arial,sans-serif;
     background:radial-gradient(circle at top,#0b2e4f,#000);
     color:#fff;
-    text-align:center;
 }
-
-/* ===== HEADER ===== */
 header{
     background:linear-gradient(#004c80,#002244);
-    padding:18px 0 12px;
+    padding:18px 0;
     font-size:26px;
     font-weight:bold;
     position:relative;
+    text-align:center;
     box-shadow:0 4px 20px rgba(0,0,0,.6);
 }
 #back-btn-top{
@@ -42,31 +38,18 @@ header{
     text-decoration:none;
     font-weight:bold;
 }
-#tickets{
-    font-size:16px;
-    margin-top:6px;
-}
-
-/* ===== MACHINE ===== */
-#machine-wrapper{
-    margin:30px auto;
-    width:360px;
-}
-
+#tickets{font-size:16px;margin-top:6px;}
+.container{display:flex;justify-content:center;margin-top:30px;align-items:flex-start;}
+#machine-wrapper{width:360px;position:relative;margin-right:20px;}
 #machine{
     position:relative;
     width:100%;
     height:460px;
-    background:
-        linear-gradient(145deg,#0a1f35,#020a14);
+    background:linear-gradient(145deg,#0a1f35,#020a14);
     border-radius:26px;
     padding:16px;
-    box-shadow:
-        inset 0 0 40px rgba(0,0,0,.9),
-        0 0 30px rgba(0,207,255,.4);
+    box-shadow:inset 0 0 40px rgba(0,0,0,.9),0 0 30px rgba(0,207,255,.4);
 }
-
-/* metal frame */
 #machine::before{
     content:"";
     position:absolute;
@@ -76,8 +59,6 @@ header{
     box-shadow:inset 0 0 15px rgba(255,255,255,.3);
     pointer-events:none;
 }
-
-/* glass */
 #glass{
     position:absolute;
     inset:18px;
@@ -86,8 +67,6 @@ header{
     box-shadow:inset 0 0 20px rgba(255,255,255,.2);
     overflow:hidden;
 }
-
-/* ===== CLAW ===== */
 #claw-line{
     position:absolute;
     top:0;
@@ -95,6 +74,7 @@ header{
     width:2px;
     background:#aaa;
     transform:translateX(-50%);
+    z-index:2;
 }
 #claw{
     position:absolute;
@@ -103,10 +83,9 @@ header{
     height:54px;
     background:linear-gradient(#eee,#999);
     border-radius:0 0 14px 14px;
-    box-shadow:0 4px 8px rgba(0,0,0,.6);
+    box-shadow:0 4px 12px rgba(0,0,0,.6);
+    z-index:3;
 }
-
-/* ===== PRIZES ===== */
 .prize{
     position:absolute;
     bottom:22px;
@@ -119,16 +98,13 @@ header{
     font-size:11px;
     font-weight:bold;
     color:#002244;
-    box-shadow:
-        inset 0 0 8px rgba(255,255,255,.6),
-        0 4px 8px rgba(0,0,0,.6);
+    box-shadow:inset 0 0 8px rgba(255,255,255,.6),0 4px 8px rgba(0,0,0,.6);
+    transition: transform 0.2s ease;
 }
 .common{background:#7CFC00}
 .medium{background:#00BFFF}
 .hard{background:#9370DB}
 .rare{background:gold}
-
-/* ===== CONTROLS ===== */
 #controls button{
     padding:14px 18px;
     margin:10px 6px;
@@ -141,59 +117,39 @@ header{
     color:#002244;
     box-shadow:0 4px 10px rgba(0,0,0,.5);
 }
-#grab{
-    background:linear-gradient(#ffe066,#ffb700);
-}
-
-/* ===== TABLE ===== */
+#grab{background:linear-gradient(#ffe066,#ffb700);}
 #probabilities-panel{
-    max-width:360px;
-    margin:20px auto;
-    background:rgba(255,255,255,.08);
-    padding:14px;
-    border-radius:14px;
-}
-#probabilities-panel h3{margin:0 0 8px}
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-th,td{
-    padding:6px;
-    font-size:14px;
-    border-bottom:1px solid var(--blue);
-}
-.highlight{
-    background:rgba(0,207,255,.25);
-}
-
-/* ===== TICKETS ===== */
-#tickets-panel{
-    max-width:360px;
-    margin:25px auto;
+    width:300px;
     background:rgba(255,255,255,.08);
     padding:14px;
     border-radius:14px;
     text-align:left;
 }
-#search-ticket{
-    width:100%;
-    padding:10px;
-    border-radius:8px;
-    border:none;
+#probabilities-panel h3{margin:0 0 8px;text-align:center;}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:6px;font-size:14px;border-bottom:1px solid var(--blue);}
+.highlight{background:rgba(0,207,255,.25);}
+#tickets-panel{max-width:360px;margin:25px auto;background:rgba(255,255,255,.08);padding:14px;border-radius:14px;text-align:left;}
+#search-ticket{width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:6px;}
+.ticket-item{background:#003366;padding:8px;border-radius:8px;margin-top:6px;font-size:13px;}
+#message{margin-top:12px;font-weight:bold;text-align:center;}
+.confetti{
+    position:fixed;width:10px;height:10px;background-color:#ffcc00;opacity:0.9;
+    pointer-events:none;animation:fall 3s linear forwards;border-radius:50%;z-index:9999;
 }
-.ticket-item{
-    background:#003366;
-    padding:8px;
-    border-radius:8px;
-    margin-top:6px;
-    font-size:13px;
+.light{
+    position:absolute;width:12px;height:12px;border-radius:50%;top:0;animation:blink 1.2s infinite;
 }
-
-#message{margin-top:12px;font-weight:bold}
+@keyframes fall{
+    0%{transform:translateY(0) rotate(0deg);}
+    100%{transform:translateY(100vh) rotate(720deg);}
+}
+@keyframes blink{
+    0%,50%,100%{opacity:0.2;}
+    25%,75%{opacity:1;}
+}
 </style>
 </head>
-
 <body>
 
 <header>
@@ -202,12 +158,14 @@ th,td{
 <div id="tickets"></div>
 </header>
 
+<div class="container">
 <div id="machine-wrapper">
 <div id="machine">
 <div id="glass">
 <div id="claw-line"></div>
 <div id="claw"></div>
 
+<!-- Prêmios -->
 <div class="prize common" data-coupon="CUPOM5" data-chance="0.6" style="left:10px">5%</div>
 <div class="prize medium" data-coupon="CUPOM10" data-chance="0.45" style="left:70px">10%</div>
 <div class="prize medium" data-coupon="CUPOM15" data-chance="0.35" style="left:130px">15%</div>
@@ -215,24 +173,24 @@ th,td{
 <div class="prize hard" data-coupon="CUPOM30" data-chance="0.15" style="left:250px">30%</div>
 <div class="prize rare" data-coupon="FRETEGRATIS" data-chance="0.1" style="left:300px">FRETE</div>
 
+<!-- Luzes piscando -->
 </div>
 </div>
-</div>
-
 <div id="controls">
 <button id="left-btn">⬅️</button>
 <button id="right-btn">➡️</button>
 <button id="grab">PEGAR</button>
 </div>
-
 <div id="message"></div>
+</div>
 
 <div id="probabilities-panel">
-<h3>📊 Probabilidades</h3>
+<h3>📊 Prêmios e Chances</h3>
 <table>
 <thead><tr><th>Prêmio</th><th>Chance</th></tr></thead>
 <tbody id="prob-body"></tbody>
 </table>
+</div>
 </div>
 
 <div id="tickets-panel">
@@ -241,8 +199,13 @@ th,td{
 <div id="tickets-list"></div>
 </div>
 
+<audio id="grab-sound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+<audio id="win-sound" src="https://www.soundjay.com/button/button-3.wav" preload="auto"></audio>
+<audio id="ambient-sound" src="https://www.soundjay.com/arcade/arcade-coin-01.mp3" preload="auto" loop></audio>
+
 <script>
-// ==== PROB TABLE ====
+// ==== INÍCIO CÓDIGO ====
+
 const probBody=document.getElementById("prob-body");
 document.querySelectorAll(".prize").forEach(p=>{
     const tr=document.createElement("tr");
@@ -251,19 +214,8 @@ document.querySelectorAll(".prize").forEach(p=>{
     probBody.appendChild(tr);
 });
 
-// ==== HIGHLIGHT ====
-function highlightPrize(){
-    document.querySelectorAll("tbody tr").forEach(r=>r.classList.remove("highlight"));
-    document.querySelectorAll(".prize").forEach(p=>{
-        if(Math.abs(p.offsetLeft - x)<20){
-            const row=document.querySelector(`tr[data-coupon="${p.dataset.coupon}"]`);
-            if(row) row.classList.add("highlight");
-        }
-    });
-}
-
 // ==== TICKETS ====
-const MAX=3, RECOVER=5*60*60*1000;
+const MAX=3;
 let tickets=+localStorage.getItem("tickets")||MAX;
 let last=+localStorage.getItem("lastTicketTime")||Date.now();
 let history=JSON.parse(localStorage.getItem("ticketHistory"))||[];
@@ -286,54 +238,118 @@ function renderTickets(){
 }
 renderTickets();
 
-// ==== GARRA ====
+// ==== CLAW ====
 const claw=document.getElementById("claw"), line=document.getElementById("claw-line");
 let x=150, targetX=150, busy=false;
-
-function ease(c,t){return c+(t-c)*0.15}
+function ease(c,t){return c+(t-c)*0.15;}
 (function anim(){
     x=ease(x,targetX);
     claw.style.left=x+"px";
+    line.style.left=x+"px";
     highlightPrize();
     requestAnimationFrame(anim);
 })();
 
 let mv=null;
-left-btn.onmousedown=()=>mv=setInterval(()=>targetX=Math.max(0,targetX-2),10);
-right-btn.onmousedown=()=>mv=setInterval(()=>targetX=Math.min(300,targetX+2),10);
+document.getElementById("left-btn").onmousedown=()=>mv=setInterval(()=>targetX=Math.max(0,targetX-2),10);
+document.getElementById("right-btn").onmousedown=()=>mv=setInterval(()=>targetX=Math.min(300,targetX+2),10);
 document.onmouseup=()=>clearInterval(mv);
 
-// ==== PEGAR ====
-grab.onclick=()=>{
-if(busy||tickets<=0)return;
-tickets--;history.push("Tentativa usada "+new Date().toLocaleString());save();renderTickets();
-busy=true;let h=0;
-(function drop(){
-    h+=(300-h)*0.18;
-    line.style.height=h+"px";
-    claw.style.top=h+"px";
-    if(h<299)requestAnimationFrame(drop);
-    else finish();
-})();
+// ==== HIGHLIGHT TABLE ====
+function highlightPrize(){
+    document.querySelectorAll("tbody tr").forEach(r=>r.classList.remove("highlight"));
+    document.querySelectorAll(".prize").forEach(p=>{
+        if(Math.abs(p.offsetLeft-x)<20){
+            const row=document.querySelector(`tr[data-coupon="${p.dataset.coupon}"]`);
+            if(row) row.classList.add("highlight");
+        }
+    });
+}
+
+// ==== GRAB ====
+const grabSound=document.getElementById("grab-sound");
+const winSound=document.getElementById("win-sound");
+const ambientSound=document.getElementById("ambient-sound");
+ambientSound.volume=0.2;
+ambientSound.play();
+
+document.getElementById("grab").onclick=()=>{
+    if(busy||tickets<=0) return;
+    tickets--;
+    history.push("Tentativa usada "+new Date().toLocaleString());
+    save();
+    renderTickets();
+    busy=true;
+    grabSound.play();
+    let h=0;
+    function drop(){
+        h+=(300-h)*0.18;
+        line.style.height=h+"px";
+        claw.style.top=h+"px";
+        if(h<299) requestAnimationFrame(drop);
+        else finish();
+    }
+    drop();
 };
 
 function finish(){
-let win=null;
-document.querySelectorAll(".prize").forEach(p=>{
-    if(Math.abs(p.offsetLeft-x)<18 && Math.random()<p.dataset.chance) win=p;
+    let win=null;
+    document.querySelectorAll(".prize").forEach(p=>{
+        if(Math.abs(p.offsetLeft-x)<18 && Math.random()<p.dataset.chance) win=p;
+    });
+    setTimeout(()=>{
+        line.style.height="0"; claw.style.top="0"; busy=false;
+        if(win){
+            let c=JSON.parse(localStorage.getItem("gameCoupons"))||[];
+            if(!c.includes(win.dataset.coupon)) c.push(win.dataset.coupon);
+            localStorage.setItem("gameCoupons",JSON.stringify(c));
+
+            const clone=win.cloneNode(true);
+            clone.style.position="absolute";
+            clone.style.top=win.offsetTop+"px";
+            clone.style.left=win.offsetLeft+"px";
+            clone.style.transition="transform 1s ease-in";
+            document.getElementById("glass").appendChild(clone);
+            setTimeout(()=>clone.style.transform="translateY(300px) rotate(360deg)",50);
+            setTimeout(()=>clone.remove(),1050);
+
+            win.remove();
+            document.getElementById("message").textContent="🎉 Você ganhou "+win.dataset.coupon;
+            winSound.play();
+            createConfetti();
+        } else document.getElementById("message").textContent="😢 Escapou da garra";
+    },400);
+}
+
+// ==== SEARCH / SECRET RESET ====
+document.getElementById("search-ticket").addEventListener("keydown",e=>{
+    if(e.key==="Enter"){
+        const v=e.target.value.trim();
+        if(v==="resetar.comando.//ticket"){tickets=MAX;save();renderTickets();e.target.value="";alert("Tickets resetados");}
+    }
 });
-setTimeout(()=>{
-    line.style.height="0"; claw.style.top="0"; busy=false;
-    if(win){
-        let c=JSON.parse(localStorage.getItem("gameCoupons"))||[];
-        if(!c.includes(win.dataset.coupon))c.push(win.dataset.coupon);
-        localStorage.setItem("gameCoupons",JSON.stringify(c));
-        win.remove();
-        message.textContent="🎉 Você ganhou "+win.dataset.coupon;
-    }else message.textContent="😢 Escapou da garra";
-},400);
+
+// ==== CONFETI ====
+function createConfetti(){
+    for(let i=0;i<50;i++){
+        let conf=document.createElement("div");
+        conf.classList.add("confetti");
+        conf.style.left=Math.random()*100+"vw";
+        conf.style.backgroundColor=`hsl(${Math.random()*360},70%,60%)`;
+        conf.style.width=conf.style.height=(Math.random()*8+6)+"px";
+        document.body.appendChild(conf);
+        setTimeout(()=>conf.remove(),3000);
+    }
+}
+
+// ==== LUZES PISCANDO ====
+for(let i=0;i<16;i++){
+    const light=document.createElement("div");
+    light.className="light";
+    light.style.left=(i*22)+"px";
+    light.style.backgroundColor=`hsl(${Math.random()*360},80%,60%)`;
+    document.getElementById("machine").appendChild(light);
 }
 </script>
-
 </body>
 </html>
