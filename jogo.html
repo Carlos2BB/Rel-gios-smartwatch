@@ -148,9 +148,9 @@ header{
 </div>
 
 <div id="controls">
-    <button onclick="moveClaw(-20)">⬅️</button>
-    <button onclick="moveClaw(20)">➡️</button>
-    <button id="grab" onclick="grab()">PEGAR</button>
+    <button id="left-btn">⬅️</button>
+    <button id="right-btn">➡️</button>
+    <button id="grab">PEGAR</button>
 </div>
 
 <div id="message"></div>
@@ -163,6 +163,7 @@ header{
 </div>
 
 <script>
+// ======== TICKETS ========
 const MAX=3, RECOVER=5*60*60*1000;
 let tickets=+localStorage.getItem("tickets")||MAX;
 let last=+localStorage.getItem("lastTicketTime")||Date.now();
@@ -211,42 +212,88 @@ document.getElementById("search-ticket").addEventListener("input",e=>{
     renderTickets();
 });
 
-const claw=document.getElementById("claw"),line=document.getElementById("claw-line");
-let x=140,busy=false;
+// ======== GARRA ========
+const claw=document.getElementById("claw"), line=document.getElementById("claw-line");
+let x = 140, targetX = 140;
+let busy=false;
 
-function moveClaw(d){ if(!busy){ x=Math.max(0,Math.min(280,x+d)); claw.style.left=x+"px"; } }
+// suavização
+function ease(current, target){ return current + (target-current)*0.15; }
+
+function animateClaw(){
+    x = ease(x, targetX);
+    claw.style.left = x + "px";
+    requestAnimationFrame(animateClaw);
+}
+animateClaw();
+
+// botão pressionado contínuo
+let moveInterval = null;
+document.getElementById("left-btn").addEventListener("mousedown",()=> moveInterval = setInterval(()=>targetX=Math.max(0,targetX-2),10));
+document.getElementById("left-btn").addEventListener("mouseup", ()=> clearInterval(moveInterval));
+document.getElementById("left-btn").addEventListener("mouseleave", ()=> clearInterval(moveInterval));
+document.getElementById("right-btn").addEventListener("mousedown",()=> moveInterval = setInterval(()=>targetX=Math.min(280,targetX+2),10));
+document.getElementById("right-btn").addEventListener("mouseup", ()=> clearInterval(moveInterval));
+document.getElementById("right-btn").addEventListener("mouseleave", ()=> clearInterval(moveInterval));
+
+// ======== PEGAR ========
+document.getElementById("grab").addEventListener("click", grab);
 
 function grab(){
     if(busy||tickets<=0) return;
-    tickets--; history.push("Tentativa usada - "+new Date().toLocaleString()); save(); renderTickets();
-    busy=true; let h=0;
-    const down=setInterval(()=>{
-        h+=10; line.style.height=h+"px"; claw.style.top=h+"px";
-        if(h>=280){ clearInterval(down); check(); }
-    },20);
+    tickets--; history.push("Tentativa usada - "+new Date().toLocaleString());
+    save(); renderTickets();
+    busy=true;
+
+    let h=0;
+    // descida suave
+    function drop(){
+        h += (280-h)*0.18;
+        line.style.height=h+"px";
+        claw.style.top=h+"px";
+        if(h<279) requestAnimationFrame(drop);
+        else checkGrab();
+    }
+    drop();
 }
 
-function check(){
+function checkGrab(){
     let win=null;
+    let grabbedPrize=null;
     document.querySelectorAll(".prize").forEach(p=>{
         if(Math.abs(p.offsetLeft-x)<18 && Math.random()<p.dataset.chance){
-            win=p.dataset.coupon; p.remove();
+            win=p.dataset.coupon;
+            grabbedPrize=p;
         }
     });
-    setTimeout(()=>{
-        let h=parseInt(line.style.height);
-        const up=setInterval(()=>{
-            h-=10; line.style.height=h+"px"; claw.style.top=h+"px";
-            if(h<=0){ clearInterval(up); busy=false; }
-        },20);
+
+    // animação subida + prêmio
+    let h=parseFloat(line.style.height);
+    function lift(){
+        h += (0-h)*0.18;
+        line.style.height=h+"px";
+        claw.style.top=h+"px";
+        if(grabbedPrize){
+            // segue garra
+            grabbedPrize.style.bottom = (25 + h/2) + "px";
+            grabbedPrize.style.left = x + "px";
+        }
+        if(h>1) requestAnimationFrame(lift);
+        else finishGrab();
+    }
+    lift();
+
+    function finishGrab(){
         if(win){
             let c=JSON.parse(localStorage.getItem("gameCoupons"))||[];
             if(!c.includes(win)){ c.push(win); localStorage.setItem("gameCoupons",JSON.stringify(c)); }
+            if(grabbedPrize) grabbedPrize.remove();
             document.getElementById("message").textContent="🎉 Você ganhou "+win;
         }else{
             document.getElementById("message").textContent="😢 Escapou da garra";
         }
-    },300);
+        busy=false;
+    }
 }
 </script>
 
