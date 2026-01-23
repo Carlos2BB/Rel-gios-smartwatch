@@ -6,122 +6,124 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-    margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: radial-gradient(circle at top, #0a2a4a, #000);
-    color: white;
-    text-align: center;
+body{
+    margin:0;
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:radial-gradient(circle at top,#0a2a4a,#000);
+    color:#fff;
+    text-align:center;
 }
-
-/* ===== HEADER ===== */
-header {
-    background: #003366;
-    padding: 20px 0;
-    font-size: 26px;
-    font-weight: bold;
-    position: relative;
+header{
+    background:#003366;
+    padding:20px 0;
+    font-size:26px;
+    font-weight:bold;
+    position:relative;
 }
-
-/* ===== BOTÃO VOLTAR ===== */
-#back-btn-top {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #003366;
-    color: white;
-    padding: 6px 12px;
-    font-size: 14px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
+#back-btn-top{
+    position:absolute;
+    left:20px;
+    top:50%;
+    transform:translateY(-50%);
+    background:#003366;
+    color:white;
+    padding:6px 12px;
+    font-size:14px;
+    border-radius:6px;
+    text-decoration:none;
+    font-weight:bold;
 }
-
-#back-btn-top:hover {
-    transform: translateY(-50%) scale(1.05);
-    box-shadow: 0 0 15px #00bfff, 0 0 30px #00ffff;
-}
-
-#tickets {
-    margin-top: 8px;
-    font-size: 18px;
-}
+#tickets{margin-top:8px;font-size:18px}
 
 /* ===== MÁQUINA ===== */
-#machine {
-    position: relative;
-    width: 320px;
-    height: 420px;
-    margin: 30px auto;
-    background: linear-gradient(#111, #222);
-    border-radius: 20px;
-    border: 6px solid #00bfff;
-    overflow: hidden;
+#machine{
+    position:relative;
+    width:320px;
+    height:420px;
+    margin:25px auto;
+    background:linear-gradient(#111,#222);
+    border-radius:20px;
+    border:6px solid #00bfff;
+    overflow:hidden;
 }
-
-#claw-line {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 2px;
-    height: 0;
-    background: silver;
-    transform: translateX(-50%);
+#claw-line{
+    position:absolute;
+    top:0;
+    left:50%;
+    width:2px;
+    height:0;
+    background:silver;
+    transform:translateX(-50%);
 }
-
-#claw {
-    position: absolute;
-    top: 0;
-    width: 40px;
-    height: 50px;
-    background: linear-gradient(#ddd, #999);
-    border-radius: 0 0 12px 12px;
-    left: 140px;
+#claw{
+    position:absolute;
+    top:0;
+    left:140px;
+    width:40px;
+    height:50px;
+    background:linear-gradient(#ddd,#999);
+    border-radius:0 0 12px 12px;
 }
-
-.prize {
-    position: absolute;
-    bottom: 25px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    color: #002244;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
+.prize{
+    position:absolute;
+    bottom:25px;
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#002244;
 }
-
-.common { background: #7CFC00; }
-.medium { background: #00BFFF; }
-.hard { background: #9370DB; }
-.rare { background: gold; }
+.common{background:#7CFC00}
+.medium{background:#00BFFF}
+.hard{background:#9370DB}
+.rare{background:gold}
 
 /* ===== CONTROLES ===== */
-#controls button {
-    padding: 14px 18px;
-    margin: 8px;
-    font-size: 16px;
-    border-radius: 12px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
+#controls button{
+    padding:14px 18px;
+    margin:8px;
+    font-size:16px;
+    border-radius:12px;
+    border:none;
+    font-weight:bold;
+    cursor:pointer;
+}
+#grab{background:#00bfff;color:#002244}
+
+/* ===== TICKETS LIST ===== */
+#tickets-panel{
+    max-width:360px;
+    margin:25px auto;
+    background:rgba(255,255,255,.1);
+    padding:15px;
+    border-radius:14px;
+    text-align:left;
+}
+#tickets-panel h3{
+    margin:0 0 10px;
+    text-align:center;
+}
+#search-ticket{
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    margin-bottom:10px;
+}
+.ticket-item{
+    background:#003366;
+    padding:8px;
+    border-radius:8px;
+    margin-bottom:6px;
+    font-size:13px;
 }
 
-#grab {
-    background: #00bfff;
-    color: #002244;
-}
-
-#message {
-    margin-top: 15px;
-    font-weight: bold;
-    min-height: 22px;
-}
+/* ===== MENSAGEM ===== */
+#message{margin-top:12px;font-weight:bold;min-height:20px}
 </style>
 </head>
 
@@ -137,10 +139,12 @@ header {
     <div id="claw-line"></div>
     <div id="claw"></div>
 
-    <div class="prize common" data-coupon="CUPOM5" data-chance="0.6" style="left:30px;">5%</div>
-    <div class="prize medium" data-coupon="CUPOM10" data-chance="0.4" style="left:100px;">10%</div>
-    <div class="prize hard" data-coupon="CUPOM20" data-chance="0.25" style="left:170px;">20%</div>
-    <div class="prize rare" data-coupon="FRETEGRATIS" data-chance="0.15" style="left:240px;">FRETE</div>
+    <div class="prize common" data-coupon="CUPOM5" data-chance="0.6" style="left:15px">5%</div>
+    <div class="prize medium" data-coupon="CUPOM10" data-chance="0.45" style="left:70px">10%</div>
+    <div class="prize medium" data-coupon="CUPOM15" data-chance="0.35" style="left:125px">15%</div>
+    <div class="prize hard" data-coupon="CUPOM20" data-chance="0.25" style="left:180px">20%</div>
+    <div class="prize hard" data-coupon="CUPOM30" data-chance="0.15" style="left:235px">30%</div>
+    <div class="prize rare" data-coupon="FRETEGRATIS" data-chance="0.1" style="left:270px">FRETE</div>
 </div>
 
 <div id="controls">
@@ -151,128 +155,98 @@ header {
 
 <div id="message"></div>
 
+<!-- PAINEL DE TICKETS -->
+<div id="tickets-panel">
+    <h3>🎟️ Histórico de Tickets</h3>
+    <input id="search-ticket" placeholder="Pesquisar ticket ou comando">
+    <div id="tickets-list"></div>
+</div>
+
 <script>
-// ========= TICKETS =========
-const MAX = 3;
-const RECOVER = 5 * 60 * 60 * 1000;
+const MAX=3, RECOVER=5*60*60*1000;
+let tickets=+localStorage.getItem("tickets")||MAX;
+let last=+localStorage.getItem("lastTicketTime")||Date.now();
+let history=JSON.parse(localStorage.getItem("ticketHistory"))||[];
 
-let tickets = JSON.parse(localStorage.getItem("tickets")) ?? MAX;
-let last = JSON.parse(localStorage.getItem("lastTicketTime")) ?? Date.now();
-
-function recoverTickets(){
-    const now = Date.now();
-    const diff = now - last;
-    const add = Math.floor(diff / RECOVER);
-
-    if(add > 0){
-        tickets = Math.min(MAX, tickets + add);
-        last += add * RECOVER;
-        localStorage.setItem("tickets", tickets);
-        localStorage.setItem("lastTicketTime", last);
+function recover(){
+    const now=Date.now();
+    const add=Math.floor((now-last)/RECOVER);
+    if(add>0){
+        tickets=Math.min(MAX,tickets+add);
+        for(let i=0;i<add;i++){
+            history.push("Ticket recuperado - "+new Date().toLocaleString());
+        }
+        last+=add*RECOVER;
+        save();
     }
 }
-
-recoverTickets();
-updateTickets();
-
-function updateTickets(){
-    document.getElementById("tickets").textContent = `🎟 Tickets: ${tickets}/3`;
+function save(){
+    localStorage.setItem("tickets",tickets);
+    localStorage.setItem("lastTicketTime",last);
+    localStorage.setItem("ticketHistory",JSON.stringify(history));
+}
+function renderTickets(){
+    document.getElementById("tickets").textContent=`🎟 Tickets: ${tickets}/3`;
+    const list=document.getElementById("tickets-list");
+    list.innerHTML="";
+    const q=document.getElementById("search-ticket").value.toLowerCase();
+    history.filter(h=>h.toLowerCase().includes(q)).forEach(h=>{
+        const d=document.createElement("div");
+        d.className="ticket-item";
+        d.textContent=h;
+        list.appendChild(d);
+    });
 }
 
-// ========= GARRA =========
-const claw = document.getElementById("claw");
-const line = document.getElementById("claw-line");
-let x = 140;
-let busy = false;
+recover(); renderTickets();
 
-function moveClaw(dx){
-    if(busy) return;
-    x = Math.max(0, Math.min(280, x + dx));
-    claw.style.left = x + "px";
-}
+document.getElementById("search-ticket").addEventListener("input",e=>{
+    if(e.target.value==="resetar.comando.//ticket"){
+        tickets=MAX;
+        history=[];
+        save();
+        e.target.value="";
+        document.getElementById("message").textContent="✔ Sistema sincronizado";
+    }
+    renderTickets();
+});
 
-// ========= JOGO =========
+const claw=document.getElementById("claw"),line=document.getElementById("claw-line");
+let x=140,busy=false;
+
+function moveClaw(d){ if(!busy){ x=Math.max(0,Math.min(280,x+d)); claw.style.left=x+"px"; } }
+
 function grab(){
-    if(busy) return;
-
-    if(tickets <= 0){
-        msg("Sem tickets ⏱️", "red");
-        return;
-    }
-
-    tickets--;
-    localStorage.setItem("tickets", tickets);
-    updateTickets();
-
-    busy = true;
-    animateDown();
+    if(busy||tickets<=0) return;
+    tickets--; history.push("Tentativa usada - "+new Date().toLocaleString()); save(); renderTickets();
+    busy=true; let h=0;
+    const down=setInterval(()=>{
+        h+=10; line.style.height=h+"px"; claw.style.top=h+"px";
+        if(h>=280){ clearInterval(down); check(); }
+    },20);
 }
 
-function animateDown(){
-    let h = 0;
-    const drop = setInterval(()=>{
-        h += 10;
-        line.style.height = h + "px";
-        claw.style.top = h + "px";
-
-        if(h >= 280){
-            clearInterval(drop);
-            checkWin();
-        }
-    }, 20);
-}
-
-function animateUp(){
-    let h = parseInt(line.style.height);
-    const up = setInterval(()=>{
-        h -= 10;
-        line.style.height = h + "px";
-        claw.style.top = h + "px";
-
-        if(h <= 0){
-            clearInterval(up);
-            busy = false;
-        }
-    }, 20);
-}
-
-function checkWin(){
-    let win = null;
-
+function check(){
+    let win=null;
     document.querySelectorAll(".prize").forEach(p=>{
-        const px = p.offsetLeft;
-        const chance = parseFloat(p.dataset.chance);
-
-        if(Math.abs(px - x) < 18 && Math.random() < chance){
-            win = p.dataset.coupon;
-            p.remove();
+        if(Math.abs(p.offsetLeft-x)<18 && Math.random()<p.dataset.chance){
+            win=p.dataset.coupon; p.remove();
         }
     });
-
     setTimeout(()=>{
-        animateUp();
+        let h=parseInt(line.style.height);
+        const up=setInterval(()=>{
+            h-=10; line.style.height=h+"px"; claw.style.top=h+"px";
+            if(h<=0){ clearInterval(up); busy=false; }
+        },20);
         if(win){
-            saveCoupon(win);
-            msg("🎉 Você ganhou " + win, "#00ff99");
-        } else {
-            msg("😢 Escapou da garra!", "#ff6666");
+            let c=JSON.parse(localStorage.getItem("gameCoupons"))||[];
+            if(!c.includes(win)){ c.push(win); localStorage.setItem("gameCoupons",JSON.stringify(c)); }
+            document.getElementById("message").textContent="🎉 Você ganhou "+win;
+        }else{
+            document.getElementById("message").textContent="😢 Escapou da garra";
         }
-    }, 400);
-}
-
-function saveCoupon(code){
-    let list = JSON.parse(localStorage.getItem("gameCoupons")) || [];
-    if(!list.includes(code)){
-        list.push(code);
-        localStorage.setItem("gameCoupons", JSON.stringify(list));
-    }
-}
-
-// ========= UI =========
-function msg(text, color){
-    const m = document.getElementById("message");
-    m.textContent = text;
-    m.style.color = color;
+    },300);
 }
 </script>
 
