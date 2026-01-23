@@ -6,26 +6,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+:root{
+    --blue:#00cfff;
+    --dark:#021427;
+    --metal:#bfc7d5;
+}
+
 body{
     margin:0;
     font-family:"Segoe UI",Arial,sans-serif;
-    background:radial-gradient(circle at top,#0a2a4a,#000);
+    background:radial-gradient(circle at top,#0b2e4f,#000);
     color:#fff;
     text-align:center;
 }
+
+/* ===== HEADER ===== */
 header{
-    background:#003366;
-    padding:20px 0;
+    background:linear-gradient(#004c80,#002244);
+    padding:18px 0 12px;
     font-size:26px;
     font-weight:bold;
     position:relative;
+    box-shadow:0 4px 20px rgba(0,0,0,.6);
 }
 #back-btn-top{
     position:absolute;
-    left:20px;
+    left:16px;
     top:50%;
     transform:translateY(-50%);
-    background:#003366;
+    background:#002244;
     color:white;
     padding:6px 12px;
     font-size:14px;
@@ -33,42 +42,76 @@ header{
     text-decoration:none;
     font-weight:bold;
 }
-#tickets{margin-top:8px;font-size:18px}
+#tickets{
+    font-size:16px;
+    margin-top:6px;
+}
 
-/* ===== MÁQUINA ===== */
+/* ===== MACHINE ===== */
+#machine-wrapper{
+    margin:30px auto;
+    width:360px;
+}
+
 #machine{
     position:relative;
-    width:320px;
-    height:420px;
-    margin:25px auto;
-    background:linear-gradient(#111,#222);
-    border-radius:20px;
-    border:6px solid #00bfff;
+    width:100%;
+    height:460px;
+    background:
+        linear-gradient(145deg,#0a1f35,#020a14);
+    border-radius:26px;
+    padding:16px;
+    box-shadow:
+        inset 0 0 40px rgba(0,0,0,.9),
+        0 0 30px rgba(0,207,255,.4);
+}
+
+/* metal frame */
+#machine::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:26px;
+    border:4px solid var(--metal);
+    box-shadow:inset 0 0 15px rgba(255,255,255,.3);
+    pointer-events:none;
+}
+
+/* glass */
+#glass{
+    position:absolute;
+    inset:18px;
+    background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.02));
+    border-radius:18px;
+    box-shadow:inset 0 0 20px rgba(255,255,255,.2);
     overflow:hidden;
 }
+
+/* ===== CLAW ===== */
 #claw-line{
     position:absolute;
     top:0;
     left:50%;
     width:2px;
-    height:0;
-    background:silver;
+    background:#aaa;
     transform:translateX(-50%);
 }
 #claw{
     position:absolute;
     top:0;
-    left:140px;
-    width:40px;
-    height:50px;
-    background:linear-gradient(#ddd,#999);
-    border-radius:0 0 12px 12px;
+    width:42px;
+    height:54px;
+    background:linear-gradient(#eee,#999);
+    border-radius:0 0 14px 14px;
+    box-shadow:0 4px 8px rgba(0,0,0,.6);
 }
+
+/* ===== PRIZES ===== */
 .prize{
     position:absolute;
-    bottom:25px;
-    width:50px;
-    height:50px;
+    bottom:22px;
+    width:52px;
+    height:52px;
     border-radius:50%;
     display:flex;
     align-items:center;
@@ -76,224 +119,219 @@ header{
     font-size:11px;
     font-weight:bold;
     color:#002244;
+    box-shadow:
+        inset 0 0 8px rgba(255,255,255,.6),
+        0 4px 8px rgba(0,0,0,.6);
 }
 .common{background:#7CFC00}
 .medium{background:#00BFFF}
 .hard{background:#9370DB}
 .rare{background:gold}
 
-/* ===== CONTROLES ===== */
+/* ===== CONTROLS ===== */
 #controls button{
     padding:14px 18px;
-    margin:8px;
+    margin:10px 6px;
     font-size:16px;
-    border-radius:12px;
+    border-radius:14px;
     border:none;
     font-weight:bold;
     cursor:pointer;
+    background:linear-gradient(#00d4ff,#0088cc);
+    color:#002244;
+    box-shadow:0 4px 10px rgba(0,0,0,.5);
 }
-#grab{background:#00bfff;color:#002244}
+#grab{
+    background:linear-gradient(#ffe066,#ffb700);
+}
 
-/* ===== TICKETS LIST ===== */
+/* ===== TABLE ===== */
+#probabilities-panel{
+    max-width:360px;
+    margin:20px auto;
+    background:rgba(255,255,255,.08);
+    padding:14px;
+    border-radius:14px;
+}
+#probabilities-panel h3{margin:0 0 8px}
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+th,td{
+    padding:6px;
+    font-size:14px;
+    border-bottom:1px solid var(--blue);
+}
+.highlight{
+    background:rgba(0,207,255,.25);
+}
+
+/* ===== TICKETS ===== */
 #tickets-panel{
     max-width:360px;
     margin:25px auto;
-    background:rgba(255,255,255,.1);
-    padding:15px;
+    background:rgba(255,255,255,.08);
+    padding:14px;
     border-radius:14px;
     text-align:left;
-}
-#tickets-panel h3{
-    margin:0 0 10px;
-    text-align:center;
 }
 #search-ticket{
     width:100%;
     padding:10px;
     border-radius:8px;
     border:none;
-    margin-bottom:10px;
 }
 .ticket-item{
     background:#003366;
     padding:8px;
     border-radius:8px;
-    margin-bottom:6px;
+    margin-top:6px;
     font-size:13px;
 }
 
-/* ===== MENSAGEM ===== */
-#message{margin-top:12px;font-weight:bold;min-height:20px}
+#message{margin-top:12px;font-weight:bold}
 </style>
 </head>
 
 <body>
 
 <header>
-    <a href="cupons.html" id="back-btn-top">← Voltar</a>
-    🎁 Máquina de Prêmios
-    <div id="tickets"></div>
+<a href="cupons.html" id="back-btn-top">← Voltar</a>
+🎁 Máquina de Prêmios
+<div id="tickets"></div>
 </header>
 
+<div id="machine-wrapper">
 <div id="machine">
-    <div id="claw-line"></div>
-    <div id="claw"></div>
+<div id="glass">
+<div id="claw-line"></div>
+<div id="claw"></div>
 
-    <div class="prize common" data-coupon="CUPOM5" data-chance="0.6" style="left:15px">5%</div>
-    <div class="prize medium" data-coupon="CUPOM10" data-chance="0.45" style="left:70px">10%</div>
-    <div class="prize medium" data-coupon="CUPOM15" data-chance="0.35" style="left:125px">15%</div>
-    <div class="prize hard" data-coupon="CUPOM20" data-chance="0.25" style="left:180px">20%</div>
-    <div class="prize hard" data-coupon="CUPOM30" data-chance="0.15" style="left:235px">30%</div>
-    <div class="prize rare" data-coupon="FRETEGRATIS" data-chance="0.1" style="left:270px">FRETE</div>
+<div class="prize common" data-coupon="CUPOM5" data-chance="0.6" style="left:10px">5%</div>
+<div class="prize medium" data-coupon="CUPOM10" data-chance="0.45" style="left:70px">10%</div>
+<div class="prize medium" data-coupon="CUPOM15" data-chance="0.35" style="left:130px">15%</div>
+<div class="prize hard" data-coupon="CUPOM20" data-chance="0.25" style="left:190px">20%</div>
+<div class="prize hard" data-coupon="CUPOM30" data-chance="0.15" style="left:250px">30%</div>
+<div class="prize rare" data-coupon="FRETEGRATIS" data-chance="0.1" style="left:300px">FRETE</div>
+
+</div>
+</div>
 </div>
 
 <div id="controls">
-    <button id="left-btn">⬅️</button>
-    <button id="right-btn">➡️</button>
-    <button id="grab">PEGAR</button>
+<button id="left-btn">⬅️</button>
+<button id="right-btn">➡️</button>
+<button id="grab">PEGAR</button>
 </div>
 
 <div id="message"></div>
 
-<!-- PAINEL DE TICKETS -->
+<div id="probabilities-panel">
+<h3>📊 Probabilidades</h3>
+<table>
+<thead><tr><th>Prêmio</th><th>Chance</th></tr></thead>
+<tbody id="prob-body"></tbody>
+</table>
+</div>
+
 <div id="tickets-panel">
-    <h3>🎟️ Histórico de Tickets</h3>
-    <input id="search-ticket" placeholder="Pesquisar ticket ou comando">
-    <div id="tickets-list"></div>
+<h3>🎟️ Histórico</h3>
+<input id="search-ticket" placeholder="Pesquisar ou comando">
+<div id="tickets-list"></div>
 </div>
 
 <script>
-// ======== TICKETS ========
+// ==== PROB TABLE ====
+const probBody=document.getElementById("prob-body");
+document.querySelectorAll(".prize").forEach(p=>{
+    const tr=document.createElement("tr");
+    tr.dataset.coupon=p.dataset.coupon;
+    tr.innerHTML=`<td>${p.dataset.coupon}</td><td>${(p.dataset.chance*100).toFixed(1)}%</td>`;
+    probBody.appendChild(tr);
+});
+
+// ==== HIGHLIGHT ====
+function highlightPrize(){
+    document.querySelectorAll("tbody tr").forEach(r=>r.classList.remove("highlight"));
+    document.querySelectorAll(".prize").forEach(p=>{
+        if(Math.abs(p.offsetLeft - x)<20){
+            const row=document.querySelector(`tr[data-coupon="${p.dataset.coupon}"]`);
+            if(row) row.classList.add("highlight");
+        }
+    });
+}
+
+// ==== TICKETS ====
 const MAX=3, RECOVER=5*60*60*1000;
 let tickets=+localStorage.getItem("tickets")||MAX;
 let last=+localStorage.getItem("lastTicketTime")||Date.now();
 let history=JSON.parse(localStorage.getItem("ticketHistory"))||[];
 
-function recover(){
-    const now=Date.now();
-    const add=Math.floor((now-last)/RECOVER);
-    if(add>0){
-        tickets=Math.min(MAX,tickets+add);
-        for(let i=0;i<add;i++){
-            history.push("Ticket recuperado - "+new Date().toLocaleString());
-        }
-        last+=add*RECOVER;
-        save();
-    }
-}
 function save(){
     localStorage.setItem("tickets",tickets);
     localStorage.setItem("lastTicketTime",last);
     localStorage.setItem("ticketHistory",JSON.stringify(history));
 }
 function renderTickets(){
-    document.getElementById("tickets").textContent=`🎟 Tickets: ${tickets}/3`;
+    document.getElementById("tickets").textContent=`🎟 ${tickets}/3`;
     const list=document.getElementById("tickets-list");
     list.innerHTML="";
-    const q=document.getElementById("search-ticket").value.toLowerCase();
-    history.filter(h=>h.toLowerCase().includes(q)).forEach(h=>{
+    history.forEach(h=>{
         const d=document.createElement("div");
         d.className="ticket-item";
         d.textContent=h;
         list.appendChild(d);
     });
 }
+renderTickets();
 
-recover(); renderTickets();
-
-document.getElementById("search-ticket").addEventListener("input",e=>{
-    if(e.target.value==="resetar.comando.//ticket"){
-        tickets=MAX;
-        history=[];
-        save();
-        e.target.value="";
-        document.getElementById("message").textContent="✔ Sistema sincronizado";
-    }
-    renderTickets();
-});
-
-// ======== GARRA ========
+// ==== GARRA ====
 const claw=document.getElementById("claw"), line=document.getElementById("claw-line");
-let x = 140, targetX = 140;
-let busy=false;
+let x=150, targetX=150, busy=false;
 
-// suavização
-function ease(current, target){ return current + (target-current)*0.15; }
+function ease(c,t){return c+(t-c)*0.15}
+(function anim(){
+    x=ease(x,targetX);
+    claw.style.left=x+"px";
+    highlightPrize();
+    requestAnimationFrame(anim);
+})();
 
-function animateClaw(){
-    x = ease(x, targetX);
-    claw.style.left = x + "px";
-    requestAnimationFrame(animateClaw);
-}
-animateClaw();
+let mv=null;
+left-btn.onmousedown=()=>mv=setInterval(()=>targetX=Math.max(0,targetX-2),10);
+right-btn.onmousedown=()=>mv=setInterval(()=>targetX=Math.min(300,targetX+2),10);
+document.onmouseup=()=>clearInterval(mv);
 
-// botão pressionado contínuo
-let moveInterval = null;
-document.getElementById("left-btn").addEventListener("mousedown",()=> moveInterval = setInterval(()=>targetX=Math.max(0,targetX-2),10));
-document.getElementById("left-btn").addEventListener("mouseup", ()=> clearInterval(moveInterval));
-document.getElementById("left-btn").addEventListener("mouseleave", ()=> clearInterval(moveInterval));
-document.getElementById("right-btn").addEventListener("mousedown",()=> moveInterval = setInterval(()=>targetX=Math.min(280,targetX+2),10));
-document.getElementById("right-btn").addEventListener("mouseup", ()=> clearInterval(moveInterval));
-document.getElementById("right-btn").addEventListener("mouseleave", ()=> clearInterval(moveInterval));
+// ==== PEGAR ====
+grab.onclick=()=>{
+if(busy||tickets<=0)return;
+tickets--;history.push("Tentativa usada "+new Date().toLocaleString());save();renderTickets();
+busy=true;let h=0;
+(function drop(){
+    h+=(300-h)*0.18;
+    line.style.height=h+"px";
+    claw.style.top=h+"px";
+    if(h<299)requestAnimationFrame(drop);
+    else finish();
+})();
+};
 
-// ======== PEGAR ========
-document.getElementById("grab").addEventListener("click", grab);
-
-function grab(){
-    if(busy||tickets<=0) return;
-    tickets--; history.push("Tentativa usada - "+new Date().toLocaleString());
-    save(); renderTickets();
-    busy=true;
-
-    let h=0;
-    // descida suave
-    function drop(){
-        h += (280-h)*0.18;
-        line.style.height=h+"px";
-        claw.style.top=h+"px";
-        if(h<279) requestAnimationFrame(drop);
-        else checkGrab();
-    }
-    drop();
-}
-
-function checkGrab(){
-    let win=null;
-    let grabbedPrize=null;
-    document.querySelectorAll(".prize").forEach(p=>{
-        if(Math.abs(p.offsetLeft-x)<18 && Math.random()<p.dataset.chance){
-            win=p.dataset.coupon;
-            grabbedPrize=p;
-        }
-    });
-
-    // animação subida + prêmio
-    let h=parseFloat(line.style.height);
-    function lift(){
-        h += (0-h)*0.18;
-        line.style.height=h+"px";
-        claw.style.top=h+"px";
-        if(grabbedPrize){
-            // segue garra
-            grabbedPrize.style.bottom = (25 + h/2) + "px";
-            grabbedPrize.style.left = x + "px";
-        }
-        if(h>1) requestAnimationFrame(lift);
-        else finishGrab();
-    }
-    lift();
-
-    function finishGrab(){
-        if(win){
-            let c=JSON.parse(localStorage.getItem("gameCoupons"))||[];
-            if(!c.includes(win)){ c.push(win); localStorage.setItem("gameCoupons",JSON.stringify(c)); }
-            if(grabbedPrize) grabbedPrize.remove();
-            document.getElementById("message").textContent="🎉 Você ganhou "+win;
-        }else{
-            document.getElementById("message").textContent="😢 Escapou da garra";
-        }
-        busy=false;
-    }
+function finish(){
+let win=null;
+document.querySelectorAll(".prize").forEach(p=>{
+    if(Math.abs(p.offsetLeft-x)<18 && Math.random()<p.dataset.chance) win=p;
+});
+setTimeout(()=>{
+    line.style.height="0"; claw.style.top="0"; busy=false;
+    if(win){
+        let c=JSON.parse(localStorage.getItem("gameCoupons"))||[];
+        if(!c.includes(win.dataset.coupon))c.push(win.dataset.coupon);
+        localStorage.setItem("gameCoupons",JSON.stringify(c));
+        win.remove();
+        message.textContent="🎉 Você ganhou "+win.dataset.coupon;
+    }else message.textContent="😢 Escapou da garra";
+},400);
 }
 </script>
 
