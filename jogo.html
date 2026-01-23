@@ -1,1 +1,250 @@
-oi
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Máquina de Prêmios</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: radial-gradient(circle at top, #0a2a4a, #000);
+    color: white;
+    text-align: center;
+}
+
+header {
+    background: #003366;
+    padding: 18px;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+#tickets {
+    margin-top: 8px;
+    font-size: 18px;
+}
+
+#machine {
+    position: relative;
+    width: 320px;
+    height: 420px;
+    margin: 30px auto;
+    background: linear-gradient(#111, #222);
+    border-radius: 20px;
+    border: 6px solid #00bfff;
+    overflow: hidden;
+}
+
+#claw-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 0;
+    background: silver;
+    transform: translateX(-50%);
+}
+
+#claw {
+    position: absolute;
+    top: 0;
+    width: 40px;
+    height: 50px;
+    background: linear-gradient(#ddd, #999);
+    border-radius: 0 0 12px 12px;
+    left: 140px;
+}
+
+.prize {
+    position: absolute;
+    bottom: 25px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: #002244;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+}
+
+.common { background: #7CFC00; }
+.medium { background: #00BFFF; }
+.hard { background: #9370DB; }
+.rare { background: gold; }
+
+#controls button {
+    padding: 14px 18px;
+    margin: 8px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#grab {
+    background: #00bfff;
+    color: #002244;
+}
+
+#message {
+    margin-top: 15px;
+    font-weight: bold;
+    min-height: 22px;
+}
+</style>
+</head>
+
+<body>
+
+<header>🎁 Máquina de Prêmios</header>
+<div id="tickets"></div>
+
+<div id="machine">
+    <div id="claw-line"></div>
+    <div id="claw"></div>
+
+    <div class="prize common" data-coupon="CUPOM5" data-chance="0.6" style="left:30px;">5%</div>
+    <div class="prize medium" data-coupon="CUPOM10" data-chance="0.4" style="left:100px;">10%</div>
+    <div class="prize hard" data-coupon="CUPOM20" data-chance="0.25" style="left:170px;">20%</div>
+    <div class="prize rare" data-coupon="FRETEGRATIS" data-chance="0.15" style="left:240px;">FRETE</div>
+</div>
+
+<div id="controls">
+    <button onclick="moveClaw(-20)">⬅️</button>
+    <button onclick="moveClaw(20)">➡️</button>
+    <button id="grab" onclick="grab()">PEGAR</button>
+</div>
+
+<div id="message"></div>
+
+<script>
+// ========= TICKETS =========
+const MAX = 3;
+const RECOVER = 5 * 60 * 60 * 1000;
+
+let tickets = JSON.parse(localStorage.getItem("tickets")) ?? MAX;
+let last = JSON.parse(localStorage.getItem("lastTicketTime")) ?? Date.now();
+
+function recoverTickets(){
+    const now = Date.now();
+    const diff = now - last;
+    const add = Math.floor(diff / RECOVER);
+
+    if(add > 0){
+        tickets = Math.min(MAX, tickets + add);
+        last += add * RECOVER;
+        localStorage.setItem("tickets", tickets);
+        localStorage.setItem("lastTicketTime", last);
+    }
+}
+
+recoverTickets();
+updateTickets();
+
+function updateTickets(){
+    document.getElementById("tickets").textContent = `🎟 Tickets: ${tickets}/3`;
+}
+
+// ========= GARRA =========
+const claw = document.getElementById("claw");
+const line = document.getElementById("claw-line");
+let x = 140;
+let busy = false;
+
+function moveClaw(dx){
+    if(busy) return;
+    x = Math.max(0, Math.min(280, x + dx));
+    claw.style.left = x + "px";
+}
+
+// ========= JOGO =========
+function grab(){
+    if(busy) return;
+
+    if(tickets <= 0){
+        msg("Sem tickets ⏱️", "red");
+        return;
+    }
+
+    tickets--;
+    localStorage.setItem("tickets", tickets);
+    updateTickets();
+
+    busy = true;
+    animateDown();
+}
+
+function animateDown(){
+    let h = 0;
+    const drop = setInterval(()=>{
+        h += 10;
+        line.style.height = h + "px";
+        claw.style.top = h + "px";
+
+        if(h >= 280){
+            clearInterval(drop);
+            checkWin();
+        }
+    }, 20);
+}
+
+function animateUp(){
+    let h = parseInt(line.style.height);
+    const up = setInterval(()=>{
+        h -= 10;
+        line.style.height = h + "px";
+        claw.style.top = h + "px";
+
+        if(h <= 0){
+            clearInterval(up);
+            busy = false;
+        }
+    }, 20);
+}
+
+function checkWin(){
+    let win = null;
+    document.querySelectorAll(".prize").forEach(p=>{
+        const px = p.offsetLeft;
+        const chance = parseFloat(p.dataset.chance);
+
+        if(Math.abs(px - x) < 18 && Math.random() < chance){
+            win = p.dataset.coupon;
+            p.remove();
+        }
+    });
+
+    setTimeout(()=>{
+        animateUp();
+        if(win){
+            saveCoupon(win);
+            msg("🎉 Você ganhou " + win, "#00ff99");
+        }else{
+            msg("😢 Escapou da garra!", "#ff6666");
+        }
+    }, 400);
+}
+
+function saveCoupon(code){
+    let list = JSON.parse(localStorage.getItem("gameCoupons")) || [];
+    if(!list.includes(code)){
+        list.push(code);
+        localStorage.setItem("gameCoupons", JSON.stringify(list));
+    }
+}
+
+// ========= UI =========
+function msg(t, c){
+    const m = document.getElementById("message");
+    m.textContent = t;
+    m.style.color = c;
+}
+</script>
+
+</body>
+</html>
