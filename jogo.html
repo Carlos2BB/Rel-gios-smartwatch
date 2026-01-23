@@ -14,11 +14,35 @@ body {
     text-align: center;
 }
 
+/* ===== HEADER ===== */
 header {
     background: #003366;
-    padding: 18px;
+    padding: 20px 0;
     font-size: 26px;
     font-weight: bold;
+    position: relative;
+}
+
+/* ===== BOTÃO VOLTAR ===== */
+#back-btn-top {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #003366;
+    color: white;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+#back-btn-top:hover {
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 0 15px #00bfff, 0 0 30px #00ffff;
 }
 
 #tickets {
@@ -26,6 +50,7 @@ header {
     font-size: 18px;
 }
 
+/* ===== MÁQUINA ===== */
 #machine {
     position: relative;
     width: 320px;
@@ -76,6 +101,7 @@ header {
 .hard { background: #9370DB; }
 .rare { background: gold; }
 
+/* ===== CONTROLES ===== */
 #controls button {
     padding: 14px 18px;
     margin: 8px;
@@ -101,8 +127,11 @@ header {
 
 <body>
 
-<header>🎁 Máquina de Prêmios</header>
-<div id="tickets"></div>
+<header>
+    <a href="cupons.html" id="back-btn-top">← Voltar</a>
+    🎁 Máquina de Prêmios
+    <div id="tickets"></div>
+</header>
 
 <div id="machine">
     <div id="claw-line"></div>
@@ -209,6 +238,7 @@ function animateUp(){
 
 function checkWin(){
     let win = null;
+
     document.querySelectorAll(".prize").forEach(p=>{
         const px = p.offsetLeft;
         const chance = parseFloat(p.dataset.chance);
@@ -224,7 +254,7 @@ function checkWin(){
         if(win){
             saveCoupon(win);
             msg("🎉 Você ganhou " + win, "#00ff99");
-        }else{
+        } else {
             msg("😢 Escapou da garra!", "#ff6666");
         }
     }, 400);
@@ -239,10 +269,10 @@ function saveCoupon(code){
 }
 
 // ========= UI =========
-function msg(t, c){
+function msg(text, color){
     const m = document.getElementById("message");
-    m.textContent = t;
-    m.style.color = c;
+    m.textContent = text;
+    m.style.color = color;
 }
 </script>
 
