@@ -242,11 +242,23 @@ function renderProducts() {
             renderProducts();
         };
 
-        // Botão comprar - salva o produto selecionado e redireciona
-        div.querySelector(".buy-btn").onclick = () => {
-            localStorage.setItem("produtoSelecionado", JSON.stringify(produto));
-            window.location.href = "finalizar.html";
-        };
+        // Botão comprar - envia o produto para o carrinho e redireciona
+div.querySelector(".buy-btn").onclick = () => {
+    const precoFinal = produto.discount > 0
+        ? produto.price - (produto.price * produto.discount / 100)
+        : produto.price;
+
+    const carrinho = [{
+        name: produto.name,
+        price: parseFloat(precoFinal)
+    }];
+
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+    localStorage.setItem("total", precoFinal.toFixed(2));
+
+    window.location.href = "finalizar.html";
+};
+
 
         productsList.appendChild(div);
     });
