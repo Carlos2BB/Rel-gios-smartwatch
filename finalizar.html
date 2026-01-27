@@ -237,6 +237,24 @@ button.finalizar:hover {
 </div>
 
 <script>
+
+// RECEBE PRODUTO VINDO DO VENDER.HTML
+if (!localStorage.getItem("carrinho") && localStorage.getItem("produtoSelecionado")) {
+    const produto = JSON.parse(localStorage.getItem("produtoSelecionado"));
+
+    const precoFinal = produto.discount > 0
+        ? produto.price - (produto.price * produto.discount / 100)
+        : produto.price;
+
+    const carrinho = [{
+        name: produto.name,
+        price: parseFloat(precoFinal)
+    }];
+
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+    localStorage.setItem("total", precoFinal.toFixed(2));
+}
+    
 function voltarPagina() {
     window.history.back();
 }
