@@ -336,45 +336,6 @@ h2 {
     #search-bar { width: 90%; }
     .product { width: 100%; }
 }
-
-/* ===== ANIMAÇÃO FINALIZAR COMPRA ===== */
-#checkout-animation {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.75);
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.truck {
-    font-size: 120px;
-    position: relative;
-    animation: truckMove 3s ease-in-out forwards;
-}
-
-.box {
-    position: absolute;
-    font-size: 50px;
-    left: -60px;
-    top: 25px;
-    animation: boxEnter 1.5s ease-in-out forwards;
-}
-
-@keyframes boxEnter {
-    0% { transform: translateX(0); opacity: 1; }
-    100% { transform: translateX(70px); opacity: 0; }
-}
-
-@keyframes truckMove {
-    0% { transform: translateX(-200px); }
-    40% { transform: translateX(0); }
-    100% { transform: translateX(600px); }
-}
-
-    
 </style>
 </head>
 
@@ -619,16 +580,7 @@ if (sellBtn) {
     localStorage.setItem("total", total.toFixed(2));
 
     // Vai para o Código 2
-   const animation = document.getElementById("checkout-animation");
-
-if (animation) {
-    animation.style.display = "flex";
-
-    setTimeout(() => {
-        window.location.href = "finalizar.html";
-    }, 3000);
-}
-
+    window.location.href = "finalizar.html";
 });
 
     }
@@ -812,17 +764,6 @@ if (searchBar) {
     });
 
 });
-
-<!-- ANIMAÇÃO FINALIZAR COMPRA -->
-<div id="checkout-animation">
-    <div class="truck">
-        🚚
-        <div class="box">📦</div>
-    </div>
-</div>
-    
 </script>
-
 </body>
-
 </html>
